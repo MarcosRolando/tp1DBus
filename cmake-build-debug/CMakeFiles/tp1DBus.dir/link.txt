@@ -1,0 +1,1 @@
+/usr/bin/cc -g  -lm CMakeFiles/tp1DBus.dir/main.c.o CMakeFiles/tp1DBus.dir/ClientCommand.c.o  -o tp1DBus 
