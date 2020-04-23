@@ -11,11 +11,11 @@ struct ClientCommand {
     char *destiny, *path, *interface, *method, *parameters;
 } typedef ClientCommand;
 
-void clientInitialize(ClientCommand* this);
+void clientCommandCreate(ClientCommand* this);
 
-void clientDestroy(ClientCommand* this);
+void clientCommandDestroy(ClientCommand* this);
 
-int clientLoadCommand(ClientCommand* this, char* input);
+int clientCommandLoadCommand(ClientCommand* this, char* input);
 
 
 #endif //TP1DBUS_CLIENTCOMMAND_H

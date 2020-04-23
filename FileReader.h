@@ -12,7 +12,9 @@ struct FileReader {
     char* command;
 } typedef FileReader;
 
-void fileReaderInitialize(FileReader* this, FILE* file);
+void fileReaderCreate(FileReader* this, FILE* file);
+
+void fileReaderDestroy(FileReader* this);
 
 char* fileReaderReadFile(FileReader* this);
 

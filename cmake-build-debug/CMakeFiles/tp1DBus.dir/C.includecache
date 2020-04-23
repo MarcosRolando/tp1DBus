@@ -6,15 +6,27 @@
 
 #IncludeRegexTransform: 
 
-/home/marcos/CLionProjects/tp1/FileReader.c
-FileReader.h
-/home/marcos/CLionProjects/tp1/FileReader.h
+/home/marcos/CLionProjects/tp1/ClientCommand.c
+ClientCommand.h
+/home/marcos/CLionProjects/tp1/ClientCommand.h
 string.h
 -
 stdlib.h
 -
 
+/home/marcos/CLionProjects/tp1/ClientCommand.h
+stdbool.h
+-
+
 /home/marcos/CLionProjects/tp1/FileReader.h
 stdio.h
 -
+
+/home/marcos/CLionProjects/tp1/main.c
+stdio.h
+-
+ClientCommand.h
+/home/marcos/CLionProjects/tp1/ClientCommand.h
+FileReader.h
+/home/marcos/CLionProjects/tp1/FileReader.h
 

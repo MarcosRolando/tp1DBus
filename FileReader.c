@@ -22,7 +22,7 @@ static void _storeText(char** buffer, char* text) {
     }
 }
 
-void fileReaderInitialize(FileReader* this, FILE* file) {
+void fileReaderCreate(FileReader* this, FILE* file) {
     this->inputFile = file;
     this->command = NULL;
 }
@@ -39,4 +39,8 @@ char* fileReaderReadFile(FileReader* this) {
         } while (strchr(buffer, '\n') == NULL);
     }
     return this->command;
+}
+
+void fileReaderDestroy(FileReader* this) {
+    free(this->command);
 }

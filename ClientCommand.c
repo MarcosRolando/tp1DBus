@@ -24,7 +24,7 @@ static void _storeText(char** buffer, char* text) {
     }
 }
 
-void clientInitialize(ClientCommand* this) {
+void clientCommandCreate(ClientCommand* this) {
     this->destiny = NULL;
     this->path = NULL;
     this->interface = NULL;
@@ -32,7 +32,7 @@ void clientInitialize(ClientCommand* this) {
     this->parameters = NULL;
 }
 
-void clientDestroy(ClientCommand* this) {
+void clientCommandDestroy(ClientCommand* this) {
     free(this->destiny);
     free(this->path);
     free(this->interface);
@@ -40,7 +40,7 @@ void clientDestroy(ClientCommand* this) {
     free(this->parameters);
 }
 
-int clientLoadCommand(ClientCommand* this, char* input) {
+int clientCommandLoadCommand(ClientCommand* this, char* input) {
     _storeText(&(this->destiny), strtok(input, " "));
     _storeText(&(this->path), strtok(NULL, " "));
     _storeText(&(this->interface), strtok(NULL, " "));

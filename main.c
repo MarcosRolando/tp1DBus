@@ -5,14 +5,15 @@
 int main() {
 
     ClientCommand command;
-    clientInitialize(&command);
+    clientCommandCreate(&command);
     FileReader reader;
-    fileReaderInitialize(&reader, stdin);
+    fileReaderCreate(&reader, stdin);
 
     char* cmd = fileReaderReadFile(&reader);
-    clientLoadCommand(&command, cmd);
+    clientCommandLoadCommand(&command, cmd);
 
-    clientDestroy(&command);
+    clientCommandDestroy(&command);
+    fileReaderDestroy(&reader);
 
     return 0;
 }
