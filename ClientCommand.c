@@ -28,7 +28,7 @@ void _storeText(char** buffer, char* text) {
 int _countCompleteInputs(ClientCommand* this, char* input) {
     int length = (int)strlen(input);
     for (int i = 0; i < length; i++) {
-        if (input[i] == ' ' || input[i] == '\n') {
+        if (input[i] == ' ' || input[i] == '(' || input[i] == ')') {
             this->amountRead++;
         }
     }
@@ -57,16 +57,17 @@ bool _loadInterface(ClientCommand* this) {
     if (this->amountRead > 1 && !(this->readInterface)) {
         _storeText(&(this->interface), this->textToRead);
         this->readInterface = (this->amountRead > 2);
-        this->textToRead = strtok(NULL, " \n");
+        this->textToRead = strtok(NULL, "(");
     }
     return this->readInterface;
 }
 
+//TENGO BUG EN EL CASO BORDE DONDE TERMINE DE LEER PERO ME ENTERO DESPUES TODO
 bool _loadMethod(ClientCommand* this) {
     if (this->amountRead > 2 && !(this->readMethod)) {
         _storeText(&(this->method), this->textToRead);
         this->readMethod = (this->amountRead > 3);
-        this->textToRead = strtok(NULL, " \n");
+        this->textToRead = strtok(NULL, ")");
     }
     return this->readMethod;
 }
@@ -104,7 +105,7 @@ void clientDestroy(ClientCommand* this) {
 
 int clientLoadCommand(ClientCommand* this, char* input) {
     _countCompleteInputs(this, input);
-    this->textToRead = strtok(input, " ");
+    this->textToRead = strtok(input, " ()");
     if (!_loadDestiny(this)) return INCOMPLETE;
     if (!_loadPath(this)) return INCOMPLETE;
     if (!_loadInterface(this)) return INCOMPLETE;
