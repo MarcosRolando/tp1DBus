@@ -34,19 +34,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /home/marcos/CLion-2019.3.5/clion-2019.3.5/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /home/marcos/CLion-2020.1/clion-2020.1/bin/cmake/linux/bin/cmake
 
 # The command to remove a file.
-RM = /home/marcos/CLion-2019.3.5/clion-2019.3.5/bin/cmake/linux/bin/cmake -E remove -f
+RM = /home/marcos/CLion-2020.1/clion-2020.1/bin/cmake/linux/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/marcos/CLionProjects/tp1DBus
+CMAKE_SOURCE_DIR = /home/marcos/CLionProjects/tp1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/marcos/CLionProjects/tp1DBus/cmake-build-debug
+CMAKE_BINARY_DIR = /home/marcos/CLionProjects/tp1/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/tp1DBus.dir/depend.make
@@ -59,43 +59,58 @@ include CMakeFiles/tp1DBus.dir/flags.make
 
 CMakeFiles/tp1DBus.dir/main.c.o: CMakeFiles/tp1DBus.dir/flags.make
 CMakeFiles/tp1DBus.dir/main.c.o: ../main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/marcos/CLionProjects/tp1DBus/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/tp1DBus.dir/main.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/tp1DBus.dir/main.c.o   -c /home/marcos/CLionProjects/tp1DBus/main.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/marcos/CLionProjects/tp1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/tp1DBus.dir/main.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/tp1DBus.dir/main.c.o   -c /home/marcos/CLionProjects/tp1/main.c
 
 CMakeFiles/tp1DBus.dir/main.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/tp1DBus.dir/main.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/marcos/CLionProjects/tp1DBus/main.c > CMakeFiles/tp1DBus.dir/main.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/marcos/CLionProjects/tp1/main.c > CMakeFiles/tp1DBus.dir/main.c.i
 
 CMakeFiles/tp1DBus.dir/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/tp1DBus.dir/main.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/marcos/CLionProjects/tp1DBus/main.c -o CMakeFiles/tp1DBus.dir/main.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/marcos/CLionProjects/tp1/main.c -o CMakeFiles/tp1DBus.dir/main.c.s
 
 CMakeFiles/tp1DBus.dir/ClientCommand.c.o: CMakeFiles/tp1DBus.dir/flags.make
 CMakeFiles/tp1DBus.dir/ClientCommand.c.o: ../ClientCommand.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/marcos/CLionProjects/tp1DBus/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/tp1DBus.dir/ClientCommand.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/tp1DBus.dir/ClientCommand.c.o   -c /home/marcos/CLionProjects/tp1DBus/ClientCommand.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/marcos/CLionProjects/tp1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/tp1DBus.dir/ClientCommand.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/tp1DBus.dir/ClientCommand.c.o   -c /home/marcos/CLionProjects/tp1/ClientCommand.c
 
 CMakeFiles/tp1DBus.dir/ClientCommand.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/tp1DBus.dir/ClientCommand.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/marcos/CLionProjects/tp1DBus/ClientCommand.c > CMakeFiles/tp1DBus.dir/ClientCommand.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/marcos/CLionProjects/tp1/ClientCommand.c > CMakeFiles/tp1DBus.dir/ClientCommand.c.i
 
 CMakeFiles/tp1DBus.dir/ClientCommand.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/tp1DBus.dir/ClientCommand.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/marcos/CLionProjects/tp1DBus/ClientCommand.c -o CMakeFiles/tp1DBus.dir/ClientCommand.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/marcos/CLionProjects/tp1/ClientCommand.c -o CMakeFiles/tp1DBus.dir/ClientCommand.c.s
+
+CMakeFiles/tp1DBus.dir/FileReader.c.o: CMakeFiles/tp1DBus.dir/flags.make
+CMakeFiles/tp1DBus.dir/FileReader.c.o: ../FileReader.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/marcos/CLionProjects/tp1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/tp1DBus.dir/FileReader.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/tp1DBus.dir/FileReader.c.o   -c /home/marcos/CLionProjects/tp1/FileReader.c
+
+CMakeFiles/tp1DBus.dir/FileReader.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/tp1DBus.dir/FileReader.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/marcos/CLionProjects/tp1/FileReader.c > CMakeFiles/tp1DBus.dir/FileReader.c.i
+
+CMakeFiles/tp1DBus.dir/FileReader.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/tp1DBus.dir/FileReader.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/marcos/CLionProjects/tp1/FileReader.c -o CMakeFiles/tp1DBus.dir/FileReader.c.s
 
 # Object files for target tp1DBus
 tp1DBus_OBJECTS = \
 "CMakeFiles/tp1DBus.dir/main.c.o" \
-"CMakeFiles/tp1DBus.dir/ClientCommand.c.o"
+"CMakeFiles/tp1DBus.dir/ClientCommand.c.o" \
+"CMakeFiles/tp1DBus.dir/FileReader.c.o"
 
 # External object files for target tp1DBus
 tp1DBus_EXTERNAL_OBJECTS =
 
 tp1DBus: CMakeFiles/tp1DBus.dir/main.c.o
 tp1DBus: CMakeFiles/tp1DBus.dir/ClientCommand.c.o
+tp1DBus: CMakeFiles/tp1DBus.dir/FileReader.c.o
 tp1DBus: CMakeFiles/tp1DBus.dir/build.make
 tp1DBus: CMakeFiles/tp1DBus.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/marcos/CLionProjects/tp1DBus/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable tp1DBus"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/marcos/CLionProjects/tp1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable tp1DBus"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/tp1DBus.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -108,6 +123,6 @@ CMakeFiles/tp1DBus.dir/clean:
 .PHONY : CMakeFiles/tp1DBus.dir/clean
 
 CMakeFiles/tp1DBus.dir/depend:
-	cd /home/marcos/CLionProjects/tp1DBus/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/marcos/CLionProjects/tp1DBus /home/marcos/CLionProjects/tp1DBus /home/marcos/CLionProjects/tp1DBus/cmake-build-debug /home/marcos/CLionProjects/tp1DBus/cmake-build-debug /home/marcos/CLionProjects/tp1DBus/cmake-build-debug/CMakeFiles/tp1DBus.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/marcos/CLionProjects/tp1/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/marcos/CLionProjects/tp1 /home/marcos/CLionProjects/tp1 /home/marcos/CLionProjects/tp1/cmake-build-debug /home/marcos/CLionProjects/tp1/cmake-build-debug /home/marcos/CLionProjects/tp1/cmake-build-debug/CMakeFiles/tp1DBus.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/tp1DBus.dir/depend
 

@@ -4,6 +4,10 @@
 CMakeFiles/tp1DBus.dir/ClientCommand.c.o: ../ClientCommand.c
 CMakeFiles/tp1DBus.dir/ClientCommand.c.o: ../ClientCommand.h
 
+CMakeFiles/tp1DBus.dir/FileReader.c.o: ../FileReader.c
+CMakeFiles/tp1DBus.dir/FileReader.c.o: ../FileReader.h
+
 CMakeFiles/tp1DBus.dir/main.c.o: ../ClientCommand.h
+CMakeFiles/tp1DBus.dir/main.c.o: ../FileReader.h
 CMakeFiles/tp1DBus.dir/main.c.o: ../main.c
 

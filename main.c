@@ -1,19 +1,16 @@
 #include <stdio.h>
 #include "ClientCommand.h"
-#include <string.h>
+#include "FileReader.h"
 
 int main() {
 
-    char buffer[32];
     ClientCommand command;
     clientInitialize(&command);
+    FileReader reader;
+    fileReaderInitialize(&reader, stdin);
 
-    while (!feof(stdin)) {
-        memset(buffer, 0, 32);
-        while (fgets(buffer, 32, stdin)) {
-            clientLoadCommand(&command, buffer);
-        }
-    }
+    char* cmd = fileReaderReadFile(&reader);
+    clientLoadCommand(&command, cmd);
 
     clientDestroy(&command);
 

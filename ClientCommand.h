@@ -9,9 +9,6 @@
 
 struct ClientCommand {
     char *destiny, *path, *interface, *method, *parameters;
-    bool readDestiny, readPath, readInterface, readMethod, readParameters;
-    int amountRead;
-    char* textToRead; //los tokens
 } typedef ClientCommand;
 
 void clientInitialize(ClientCommand* this);

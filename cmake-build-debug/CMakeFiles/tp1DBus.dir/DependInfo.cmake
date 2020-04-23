@@ -4,8 +4,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/marcos/CLionProjects/tp1DBus/ClientCommand.c" "/home/marcos/CLionProjects/tp1DBus/cmake-build-debug/CMakeFiles/tp1DBus.dir/ClientCommand.c.o"
-  "/home/marcos/CLionProjects/tp1DBus/main.c" "/home/marcos/CLionProjects/tp1DBus/cmake-build-debug/CMakeFiles/tp1DBus.dir/main.c.o"
+  "/home/marcos/CLionProjects/tp1/ClientCommand.c" "/home/marcos/CLionProjects/tp1/cmake-build-debug/CMakeFiles/tp1DBus.dir/ClientCommand.c.o"
+  "/home/marcos/CLionProjects/tp1/FileReader.c" "/home/marcos/CLionProjects/tp1/cmake-build-debug/CMakeFiles/tp1DBus.dir/FileReader.c.o"
+  "/home/marcos/CLionProjects/tp1/main.c" "/home/marcos/CLionProjects/tp1/cmake-build-debug/CMakeFiles/tp1DBus.dir/main.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 
