@@ -7,10 +7,10 @@
 
 #include <stdio.h>
 
-struct FileReader {
+typedef struct FileReader {
     FILE* inputFile;
     char* command;
-} typedef FileReader;
+} FileReader;
 
 void fileReaderCreate(FileReader* this, FILE* file);
 

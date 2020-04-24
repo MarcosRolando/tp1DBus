@@ -2,6 +2,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/tp1DBus.dir/ClientCommand.c.o"
   "CMakeFiles/tp1DBus.dir/FileReader.c.o"
   "CMakeFiles/tp1DBus.dir/main.c.o"
+  "CMakeFiles/tp1DBus.dir/stringExtra.c.o"
   "tp1DBus"
   "tp1DBus.pdb"
 )

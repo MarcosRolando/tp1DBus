@@ -7,15 +7,15 @@
 
 #include <stdbool.h>
 
-struct ClientCommand {
+typedef struct ClientCommand {
     char *destiny, *path, *interface, *method, *parameters;
-} typedef ClientCommand;
+} ClientCommand;
 
 void clientCommandCreate(ClientCommand* this);
 
 void clientCommandDestroy(ClientCommand* this);
 
-int clientCommandLoadCommand(ClientCommand* this, char* input);
+void clientCommandLoadCommand(ClientCommand* this, char* input);
 
 
 #endif //TP1DBUS_CLIENTCOMMAND_H

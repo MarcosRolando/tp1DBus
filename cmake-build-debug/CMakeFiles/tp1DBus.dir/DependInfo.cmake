@@ -7,6 +7,7 @@ set(CMAKE_DEPENDS_CHECK_C
   "/home/marcos/CLionProjects/tp1/ClientCommand.c" "/home/marcos/CLionProjects/tp1/cmake-build-debug/CMakeFiles/tp1DBus.dir/ClientCommand.c.o"
   "/home/marcos/CLionProjects/tp1/FileReader.c" "/home/marcos/CLionProjects/tp1/cmake-build-debug/CMakeFiles/tp1DBus.dir/FileReader.c.o"
   "/home/marcos/CLionProjects/tp1/main.c" "/home/marcos/CLionProjects/tp1/cmake-build-debug/CMakeFiles/tp1DBus.dir/main.c.o"
+  "/home/marcos/CLionProjects/tp1/stringExtra.c" "/home/marcos/CLionProjects/tp1/cmake-build-debug/CMakeFiles/tp1DBus.dir/stringExtra.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

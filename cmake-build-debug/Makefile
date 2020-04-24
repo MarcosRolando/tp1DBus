@@ -204,6 +204,33 @@ main.c.s:
 	$(MAKE) -f CMakeFiles/tp1DBus.dir/build.make CMakeFiles/tp1DBus.dir/main.c.s
 .PHONY : main.c.s
 
+stringExtra.o: stringExtra.c.o
+
+.PHONY : stringExtra.o
+
+# target to build an object file
+stringExtra.c.o:
+	$(MAKE) -f CMakeFiles/tp1DBus.dir/build.make CMakeFiles/tp1DBus.dir/stringExtra.c.o
+.PHONY : stringExtra.c.o
+
+stringExtra.i: stringExtra.c.i
+
+.PHONY : stringExtra.i
+
+# target to preprocess a source file
+stringExtra.c.i:
+	$(MAKE) -f CMakeFiles/tp1DBus.dir/build.make CMakeFiles/tp1DBus.dir/stringExtra.c.i
+.PHONY : stringExtra.c.i
+
+stringExtra.s: stringExtra.c.s
+
+.PHONY : stringExtra.s
+
+# target to generate assembly for a file
+stringExtra.c.s:
+	$(MAKE) -f CMakeFiles/tp1DBus.dir/build.make CMakeFiles/tp1DBus.dir/stringExtra.c.s
+.PHONY : stringExtra.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -222,6 +249,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... stringExtra.o"
+	@echo "... stringExtra.i"
+	@echo "... stringExtra.s"
 .PHONY : help
 
 

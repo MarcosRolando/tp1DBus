@@ -99,6 +99,12 @@
 		<Unit filename="/home/marcos/CLionProjects/tp1/main.c">
 			<Option target="tp1DBus"/>
 		</Unit>
+		<Unit filename="/home/marcos/CLionProjects/tp1/stringExtra.c">
+			<Option target="tp1DBus"/>
+		</Unit>
+		<Unit filename="/home/marcos/CLionProjects/tp1/stringExtra.h">
+			<Option target="tp1DBus"/>
+		</Unit>
 		<Unit filename="/home/marcos/CLionProjects/tp1/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

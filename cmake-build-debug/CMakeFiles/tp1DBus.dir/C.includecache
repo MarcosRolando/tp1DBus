@@ -13,10 +13,22 @@ string.h
 -
 stdlib.h
 -
+stringExtra.h
+/home/marcos/CLionProjects/tp1/stringExtra.h
 
 /home/marcos/CLionProjects/tp1/ClientCommand.h
 stdbool.h
 -
+
+/home/marcos/CLionProjects/tp1/FileReader.c
+FileReader.h
+/home/marcos/CLionProjects/tp1/FileReader.h
+string.h
+-
+stdlib.h
+-
+stringExtra.h
+/home/marcos/CLionProjects/tp1/stringExtra.h
 
 /home/marcos/CLionProjects/tp1/FileReader.h
 stdio.h
@@ -29,4 +41,14 @@ ClientCommand.h
 /home/marcos/CLionProjects/tp1/ClientCommand.h
 FileReader.h
 /home/marcos/CLionProjects/tp1/FileReader.h
+
+/home/marcos/CLionProjects/tp1/stringExtra.c
+string.h
+-
+stdio.h
+-
+stdlib.h
+-
+
+/home/marcos/CLionProjects/tp1/stringExtra.h
 
