@@ -1,3 +1,0 @@
-/home/marcos/CLionProjects/tp1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/marcos/CLionProjects/tp1/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/marcos/CLionProjects/tp1/cmake-build-debug/CMakeFiles/tp1DBus.dir
