@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "ClientCommand.h"
 #include "FileReader.h"
+#include "Client.h"
 
 int main() {
 
@@ -14,6 +15,8 @@ int main() {
 
     clientCommandDestroy(&command);
     fileReaderDestroy(&reader);
+
+    test();
 
     return 0;
 }
