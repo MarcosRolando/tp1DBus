@@ -3,3 +3,28 @@
 //
 
 #include "ErrorVerifier.h"
+#include <stdio.h>
+#include <netdb.h>
+#include <stdlib.h>
+
+void errorVerifierGetAddrInfo(ErrorVerifier* this, int flag) {
+    if (flag != 0) {
+        printf("Error in getaddrinfo: %s\n", gai_strerror(flag));
+        exit(EXIT_FAILURE);
+    }
+}
+
+void errorVerifierConnect(ErrorVerifier* this, struct addrinfo* rp) {
+    if (rp == NULL) {               /* No address succeeded */
+        fprintf(stderr, "Could not connect\n");
+        exit(EXIT_FAILURE);
+    }
+}
+
+void errorVerifierCreate(ErrorVerifier* this) {
+    //do nothing
+}
+
+void errorVerifierDestroy(ErrorVerifier* this) {
+    //do nothing
+}

@@ -8,7 +8,7 @@
 #include "Socket.h"
 #include "ErrorVerifier.h"
 
-typdef struct Client {
+typedef struct Client {
     char* host; //hostname
     char* port; //servicename
     Socket socket;

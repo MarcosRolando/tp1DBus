@@ -12,8 +12,6 @@
 #include <stdbool.h>
 #include <errno.h>
 
-
-
 int test() {
     int s = 0;
     bool are_we_connected = false;
@@ -102,7 +100,7 @@ int test() {
     return 0;
 }
 
-static struct addrinfo* _setHints(Client* this) {
+static struct addrinfo* _getAddresses(Client* this) {
     struct addrinfo hints, *result;
     int s; //flag por si hubo un error, lo maneja ErrorVerifier
     memset(&hints, 0, sizeof(struct addrinfo));
@@ -110,20 +108,28 @@ static struct addrinfo* _setHints(Client* this) {
     hints.ai_socktype = SOCK_STREAM; /* TCP  (or SOCK_DGRAM for UDP)    */
     hints.ai_flags = 0;              /* None (or AI_PASSIVE for server) */
     s = getaddrinfo(this->host, this->port, &hints, &result);
+    errorVerifierGetAddrInfo(&this->eVerifier, s);
+    return result;
 }
 
 int clientConnect(Client* this) {
-    _setHints(this);
+    struct addrinfo* addresses = _getAddresses(this);
+    socketConnect(&this->socket, addresses);
+    //todo
+
+    return 0;
 }
 
 void clientCreate(Client* this, char* host, char* port) {
     this->host = host;
     this->port = port;
     socketCreate(&this->socket);
+    errorVerifierCreate(&this->eVerifier);
 }
 
 void clientDestroy(Client* this) {
     socketDestroy(&this->socket);
+    errorVerifierDestroy(&this->eVerifier);
 }
 
 
