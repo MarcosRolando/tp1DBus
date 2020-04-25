@@ -15,6 +15,8 @@ typedef struct Socket{
 
 void socketCreate(Socket* this);
 
+void mensajePrueba(Socket* this);
+
 void socketConnect(Socket* this, struct addrinfo* addresses);
 
 void socketDestroy(Socket* this);

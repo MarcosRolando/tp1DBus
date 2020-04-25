@@ -22,7 +22,7 @@ int main() {
     hints.ai_flags = AI_PASSIVE;    /* For wildcard IP address */
     hints.ai_protocol = 0;          /* Any protocol */
 
-    s = getaddrinfo(NULL, "8081", &hints, &result);
+    s = getaddrinfo(NULL, "8080", &hints, &result);
     if (s != 0) {
         fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
         exit(EXIT_FAILURE);
@@ -55,10 +55,10 @@ int main() {
 
     int sktConnected = accept(sfd, NULL, NULL);
     int bytesRecieved = 0;
-    char buff[5];
-    memset(buff, 0, 5);
-    while (bytesRecieved < 4 && s != -1) {
-        s = recv(sktConnected, buff, 4 - bytesRecieved, 0);
+    char buff[6];
+    memset(buff, 0, 6);
+    while (bytesRecieved < 5 && s != -1) {
+        s = recv(sktConnected, buff, 5 - bytesRecieved, 0);
         if (s!=-1) bytesRecieved += s;
     }
     printf("%s", buff);

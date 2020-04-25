@@ -5,9 +5,22 @@
 #include "Socket.h"
 #include <netdb.h>
 #include <unistd.h>
+#include <string.h>
 
 void socketCreate(Socket* this) {
     //do nothing
+}
+
+void mensajePrueba(Socket* this) {
+    char* mensaje = "hola\n";
+    int length = strlen(mensaje);
+    int bytesSent = 0, s;
+
+    while (bytesSent < length) {
+        s = send(this->fd, mensaje, length - bytesSent, MSG_NOSIGNAL);
+        if (s == -1) break;
+        bytesSent += s;
+    }
 }
 
 void socketConnect(Socket* this, struct addrinfo* addresses) {
@@ -27,5 +40,5 @@ void socketConnect(Socket* this, struct addrinfo* addresses) {
 }
 
 void socketDestroy(Socket* this) {
-    //do nothing
+    close(this->fd);
 }

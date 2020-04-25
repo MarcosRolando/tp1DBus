@@ -17,8 +17,8 @@ typedef struct Client {
 
 void clientCreate(Client* this, char* host, char* port);
 
-void clientDestroy(Client* this);
+int clientConnect(Client* this);
 
-int test();
+void clientDestroy(Client* this);
 
 #endif //TP1DBUS_CLIENT_H
