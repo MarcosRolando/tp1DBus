@@ -49,7 +49,7 @@ int serverConnect(Server* this) {
     freeaddrinfo(addresses); //en este punto ya logre bindear al socket y puedo empezar a aceptar conexiones
     socketMaxListen(&this->socket, MAX_LISTENERS);
     Socket peer = socketAccept(&this->socket);
-    char* message = recibirMensajePrueba(&this->courier, &this->socket);
+    char* message = recibirMensajePrueba(&this->courier, &peer);
     printf("%s", message);
     socketDestroy(&peer);
     return 0;

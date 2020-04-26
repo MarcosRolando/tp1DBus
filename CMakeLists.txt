@@ -7,8 +7,8 @@ add_executable(tp1DBus main.c ClientCommand.c FileReader.c
         stringExtra.c stringExtra.h Client.c Client.h Socket.c Socket.h
         ErrorVerifier.c ErrorVerifier.h Messenger.c Messenger.h)
 
-add_executable(server serverMain.cpp Server.c Server.h Socket.c Socket.h
-        ErrorVerifier.c ErrorVerifier.h Messenger.c Messenger.h)
+add_executable(server Server.c Server.h Socket.c Socket.h
+        ErrorVerifier.c ErrorVerifier.h Messenger.c Messenger.h serverMain.c)
 
 target_compile_options (tp1DBus PRIVATE -Wall -Werror -pedantic -pedantic-errors
         -O3 -ggdb -DDEBUG -fno-inline)

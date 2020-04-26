@@ -6,9 +6,7 @@
 
 int main() {
     Server server;
-    serverCreate(&server);
+    serverCreate(&server, "8080");
     serverConnect(&server);
     serverDestroy(&server);
-
-    return 0;
 }
