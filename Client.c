@@ -23,7 +23,7 @@ static struct addrinfo* _getAddresses(Client* this) {
 int clientConnect(Client* this) {
     struct addrinfo* addresses = _getAddresses(this);
     socketConnect(&this->socket, addresses);
-    freeaddrinfo(addresses);
+    freeaddrinfo(addresses); //en este punto ya logre conectarme al socket y puedo empezar a mandar mensajes
     mensajePrueba(&this->socket);
     //todo
 

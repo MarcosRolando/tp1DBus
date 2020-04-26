@@ -3,7 +3,6 @@
 //
 
 #include <string.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 //concatena text en buffer y hace que buffer apunte al nuevo char* dinamico
@@ -14,10 +13,7 @@ void concatenateStrings(char** buffer, char* text) {
         strncpy(*buffer, text, textSize);
     } else {
         size_t newBufferSize = textSize + strlen(*buffer);
-        char* newBuffer = malloc((newBufferSize)*sizeof(char));
-        memset(newBuffer, 0, newBufferSize);
-        snprintf(newBuffer, newBufferSize, "%s%s", *buffer, text);
-        free(*buffer);
-        *buffer = newBuffer;
+        *buffer = realloc(*buffer, (newBufferSize)*sizeof(char));
+        strncat(*buffer, text, textSize);
     }
 }
