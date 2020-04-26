@@ -7,6 +7,8 @@
 
 #include <netdb.h>
 
+struct addrinfo;
+
 typedef struct ErrorVerifier {
     int evitoStructHasNoMember;
 } ErrorVerifier;

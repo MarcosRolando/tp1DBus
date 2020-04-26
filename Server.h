@@ -5,6 +5,10 @@
 #ifndef TP1_SERVER_H
 #define TP1_SERVER_H
 
+#include "Socket.h"
 
+typedef struct Server {
+    Socket socket;
+} Server;
 
 #endif //TP1_SERVER_H

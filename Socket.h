@@ -8,6 +8,8 @@
 #include <netdb.h>
 #include "ErrorVerifier.h"
 
+struct addrinfo;
+
 typedef struct Socket{
     int fd; //file descriptor
     ErrorVerifier eVerifier;

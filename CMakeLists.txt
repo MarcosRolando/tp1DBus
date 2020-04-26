@@ -4,7 +4,8 @@ project(tp1DBus)
 set(CMAKE_C_STANDARD 99)
 
 add_executable(tp1DBus main.c ClientCommand.c FileReader.c
-        stringExtra.c stringExtra.h Client.c Client.h Socket.c Socket.h ErrorVerifier.c ErrorVerifier.h)
+        stringExtra.c stringExtra.h Client.c Client.h Socket.c Socket.h
+        ErrorVerifier.c ErrorVerifier.h)
 
 add_executable(server Server.c Server.h)
 
