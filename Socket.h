@@ -17,9 +17,15 @@ typedef struct Socket{
 
 void socketCreate(Socket* this);
 
-void mensajePrueba(Socket* this);
-
 void socketConnect(Socket* this, struct addrinfo* addresses);
+
+int socketGetFileDescriptor(Socket* this);
+
+void socketBind(Socket* this, struct addrinfo* addresses);
+
+void socketMaxListen(Socket* this, int max);
+
+Socket socketAccept(Socket* this);
 
 void socketDestroy(Socket* this);
 

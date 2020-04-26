@@ -14,61 +14,43 @@
 #include <netdb.h>
 #include "Server.h"
 
-int main() {
-    struct addrinfo hints;
-    struct addrinfo *result, *rp;
-    int sfd, s;
+#define MAX_LISTENERS 1
 
+void serverCreate(Server* this, char* port) {
+    this->port = port;
+    socketCreate(&this->socket);
+    messengerCreate(&this->courier);
+    errorVerifierCreate(&this->eVerifier);
+}
+
+void serverDestroy(Server* this) {
+    socketDestroy(&this->socket);
+    messengerDestroy(&this->courier);
+    errorVerifierDestroy(&this->eVerifier);
+}
+
+static struct addrinfo* _getAddresses(Server* this) {
+    struct addrinfo hints, *result;
+    int s; //flag por si hubo un error, lo maneja ErrorVerifier
     memset(&hints, 0, sizeof(struct addrinfo));
     hints.ai_family = AF_INET;    /* Allow IPv4 or IPv6 */
     hints.ai_socktype = SOCK_STREAM; /* Datagram socket */
     hints.ai_flags = AI_PASSIVE;    /* For wildcard IP address */
     hints.ai_protocol = 0;          /* Any protocol */
+    s = getaddrinfo(NULL, this->port, &hints, &result);
+    errorVerifierGetAddrInfo(&this->eVerifier, s);
+    return result;
+}
 
-    s = getaddrinfo(NULL, "8080", &hints, &result);
-    if (s != 0) {
-        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
-        exit(EXIT_FAILURE);
-    }
 
-    int val = 1;
-
-    for (rp = result; rp != NULL; rp = rp->ai_next) {
-        sfd = socket(rp->ai_family, rp->ai_socktype,
-                     rp->ai_protocol);
-        if (sfd == -1)
-            continue;
-
-        setsockopt(sfd, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val));
-
-        if (bind(sfd, rp->ai_addr, rp->ai_addrlen) == 0)
-            break;                  /* Success */
-
-        close(sfd);
-    }
-
-    if (rp == NULL) {               /* No address succeeded */
-        fprintf(stderr, "Could not bind\n");
-        exit(EXIT_FAILURE);
-    }
-
-    freeaddrinfo(result);           /* No longer needed */
-
-    listen(sfd, 20);
-
-    int sktConnected = accept(sfd, NULL, NULL);
-    int bytesRecieved = 0;
-    char buff[6];
-    memset(buff, 0, 6);
-    while (bytesRecieved < 5 && s != -1) {
-        s = recv(sktConnected, buff, 5 - bytesRecieved, 0);
-        if (s!=-1) bytesRecieved += s;
-    }
-    printf("%s", buff);
-
-    close(sktConnected);
-    close(sfd);
-
+int serverConnect(Server* this) {
+    struct addrinfo* addresses = _getAddresses(this);
+    socketBind(&this->socket, addresses);
+    freeaddrinfo(addresses); //en este punto ya logre bindear al socket y puedo empezar a aceptar conexiones
+    socketMaxListen(&this->socket, MAX_LISTENERS);
+    Socket peer = socketAccept(&this->socket);
+    char* message = recibirMensajePrueba(&this->courier, &this->socket);
+    printf("%s", message);
+    socketDestroy(&peer);
     return 0;
-
 }

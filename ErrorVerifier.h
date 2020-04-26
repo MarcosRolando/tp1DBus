@@ -10,7 +10,7 @@
 struct addrinfo;
 
 typedef struct ErrorVerifier {
-    int evitoStructHasNoMember;
+    int x;
 } ErrorVerifier;
 
 void errorVerifierCreate(ErrorVerifier* this);
@@ -20,5 +20,7 @@ void errorVerifierDestroy(ErrorVerifier* this);
 void errorVerifierGetAddrInfo(ErrorVerifier* this, int flag);
 
 void errorVerifierConnect(ErrorVerifier* this, struct addrinfo* rp);
+
+void errorVerifierBind(ErrorVerifier* this, struct addrinfo* rp);
 
 #endif //TP1DBUS_ERRORVERIFIER_H

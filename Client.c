@@ -24,7 +24,7 @@ int clientConnect(Client* this) {
     struct addrinfo* addresses = _getAddresses(this);
     socketConnect(&this->socket, addresses);
     freeaddrinfo(addresses); //en este punto ya logre conectarme al socket y puedo empezar a mandar mensajes
-    mensajePrueba(&this->socket);
+    enviarMensajePrueba(&this->courier, &this->socket, "hola\n");
     //todo
 
     return 0;
@@ -35,11 +35,13 @@ void clientCreate(Client* this, char* host, char* port) {
     this->port = port;
     socketCreate(&this->socket);
     errorVerifierCreate(&this->eVerifier);
+    messengerCreate(&this->courier);
 }
 
 void clientDestroy(Client* this) {
     socketDestroy(&this->socket);
     errorVerifierDestroy(&this->eVerifier);
+    messengerDestroy(&this->courier);
 }
 
 

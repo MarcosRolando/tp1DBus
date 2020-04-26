@@ -9,20 +9,16 @@
 #include <unistd.h>
 #include <string.h>
 
+static void _setFileDescriptor(Socket* this, int fd) {
+    this->fd = fd;
+}
+
 void socketCreate(Socket* this) {
     //do nothing
 }
 
-void mensajePrueba(Socket* this) {
-    char* mensaje = "hola\n";
-    int length = strlen(mensaje);
-    int bytesSent = 0, s;
-
-    while (bytesSent < length) {
-        s = send(this->fd, mensaje, length - bytesSent, MSG_NOSIGNAL);
-        if (s == -1) break;
-        bytesSent += s;
-    }
+int socketGetFileDescriptor(Socket* this) {
+    return this->fd;
 }
 
 void socketConnect(Socket* this, struct addrinfo* addresses) {
@@ -39,6 +35,37 @@ void socketConnect(Socket* this, struct addrinfo* addresses) {
         close(this->fd );
     }
     errorVerifierConnect(&this->eVerifier, rp);
+}
+
+void socketBind(Socket* this, struct addrinfo* addresses) {
+    struct addrinfo* rp;
+    int val = 1; //no entiendo esto pero el dipa lo hace
+    for (rp = addresses; rp != NULL; rp = rp->ai_next) {
+        this->fd = socket(rp->ai_family, rp->ai_socktype,
+                     rp->ai_protocol);
+        if (this->fd == -1)
+            continue;
+
+        setsockopt(this->fd, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val)); //con esto espero a q me den el port si esta en uso
+
+        if (bind(this->fd, rp->ai_addr, rp->ai_addrlen) == 0)
+            break;                  /* Success */
+
+        close(this->fd);
+    }
+    errorVerifierBind(&this->eVerifier, rp);
+}
+
+Socket socketAccept(Socket* this) {
+    int peerFd = accept(this->fd, NULL, NULL);
+    Socket peer;
+    socketCreate(&peer);
+    _setFileDescriptor(&peer, peerFd);
+    return peer;
+}
+
+void socketMaxListen(Socket* this, int max) {
+    listen(this->fd, 20);
 }
 
 void socketDestroy(Socket* this) {

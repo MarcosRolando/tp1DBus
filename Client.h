@@ -7,10 +7,12 @@
 
 #include "Socket.h"
 #include "ErrorVerifier.h"
+#include "Messenger.h"
 
 typedef struct Client {
     char* host; //hostname
     char* port; //servicename
+    Messenger courier;
     Socket socket;
     ErrorVerifier eVerifier;
 } Client;
