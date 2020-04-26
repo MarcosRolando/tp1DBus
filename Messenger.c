@@ -6,19 +6,21 @@
 #include "Socket.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 void messengerCreate(Messenger* this) {
-    //do nothing
+    errorVerifierCreate(&this->eVerifier);
 }
 
-void enviarMensajePrueba(Messenger* this, Socket* socket, char* message) {
-    int length = strlen(message);
+void messengerSend(Messenger* this, Socket* socket, char* message) {
+    int length = strlen(message) + 1; //+1 porque debe enviar el \0 tambien
     int destiny = socketGetFileDescriptor(socket);
     int bytesSent = 0, s = 0;
+    bool lostConection = false;
 
-    while (bytesSent < length) {
+    while (!lostConection && (bytesSent < length)) {
         s = send(destiny, message, length - bytesSent, MSG_NOSIGNAL);
-        if (s == -1) break;
+        errorVerifierSend(&this->eVerifier, s);
         bytesSent += s;
     }
 }
@@ -36,5 +38,5 @@ char* recibirMensajePrueba(Messenger* this, Socket* socket) {
 }
 
 void messengerDestroy(Messenger* this) {
-    //do nothing;
+    errorVerifierDestroy(&this->eVerifier);
 }

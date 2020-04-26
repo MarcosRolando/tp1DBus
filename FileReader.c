@@ -14,11 +14,11 @@ void fileReaderCreate(FileReader* this, FILE* file) {
 
 //retorna el primer comando del archivo
 char* fileReaderReadFile(FileReader* this) {
-    char buffer[32];
+    char buffer[33];
     if (!feof(this->inputFile)) {
-        memset(buffer, 0, 32);
+        memset(buffer, 0, 33);
         do {
-            if (fgets(buffer, 32, this->inputFile)) {
+            if (fgets(buffer, 33, this->inputFile)) {
                 concatenateStrings(&(this->command), buffer);
             }
         } while (strchr(buffer, '\n') == NULL);

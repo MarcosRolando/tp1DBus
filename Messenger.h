@@ -6,14 +6,15 @@
 #define TP1DBUS_MESSENGER_H
 
 #include "Socket.h"
+#include "ErrorVerifier.h"
 
 typedef struct Messenger {
-    int x;
+    ErrorVerifier eVerifier;
 } Messenger;
 
 void messengerCreate(Messenger* this);
 
-void enviarMensajePrueba(Messenger* this, Socket* socket, char* message);
+void messengerSend(Messenger* this, Socket* socket, char* message);
 
 char* recibirMensajePrueba(Messenger* this, Socket* socket);
 

@@ -8,10 +8,19 @@
 #include <stdio.h>
 #include <netdb.h>
 #include <stdlib.h>
+#include <string.h>
+#include <errno.h>
 
 void errorVerifierGetAddrInfo(ErrorVerifier* this, int flag) {
     if (flag != 0) {
         fprintf(stderr, "Error in getaddrinfo: %s\n", gai_strerror(flag));
+        exit(EXIT_FAILURE);
+    }
+}
+
+void errorVerifierSend(ErrorVerifier* this, int flag) {
+    if (flag == -1) {
+        fprintf(stderr, "Error in send: %s\n", strerror(errno));
         exit(EXIT_FAILURE);
     }
 }

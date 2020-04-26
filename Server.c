@@ -51,6 +51,7 @@ int serverConnect(Server* this) {
     Socket peer = socketAccept(&this->socket);
     char* message = recibirMensajePrueba(&this->courier, &peer);
     printf("%s", message);
+    free(message);
     socketDestroy(&peer);
     return 0;
 }

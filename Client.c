@@ -24,7 +24,7 @@ int clientConnect(Client* this) {
     struct addrinfo* addresses = _getAddresses(this);
     socketConnect(&this->socket, addresses);
     freeaddrinfo(addresses); //en este punto ya logre conectarme al socket y puedo empezar a mandar mensajes
-    enviarMensajePrueba(&this->courier, &this->socket, "hola\n");
+    messengerSend(&this->courier, &this->socket, "hola\n");
     //todo
 
     return 0;

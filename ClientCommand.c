@@ -7,6 +7,12 @@
 #include <stdlib.h>
 #include "stringExtra.h"
 
+static void _deleteParametersSeparator(ClientCommand* this) {
+    for (int i = 0; i < strlen(this->parameters); ++i) {
+        if (this->parameters[i] == ',') this->parameters[i] = '\0';
+    }
+}
+
 void clientCommandCreate(ClientCommand* this) {
     this->destiny = NULL;
     this->path = NULL;
@@ -29,4 +35,5 @@ void clientCommandLoadCommand(ClientCommand* this, char* input) {
     concatenateStrings(&(this->interface), strtok(NULL, " "));
     concatenateStrings(&(this->method), strtok(NULL, "("));
     concatenateStrings(&(this->parameters), strtok(NULL, ")"));
+    _deleteParametersSeparator(this);
 }
