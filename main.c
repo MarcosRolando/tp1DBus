@@ -4,7 +4,7 @@
 #include "Client.h"
 
 int main() {
-/*
+
     ClientCommand command;
     clientCommandCreate(&command);
     FileReader reader;
@@ -13,14 +13,13 @@ int main() {
     char* cmd = fileReaderReadFile(&reader);
     clientCommandLoadCommand(&command, cmd);
 
-    clientCommandDestroy(&command);
-    fileReaderDestroy(&reader);
-*/
-
     Client client;
     clientCreate(&client, "localhost", "8080");
     clientConnect(&client);
+    clientSend(&client, command);
     clientDestroy(&client);
+    clientCommandDestroy(&command);
+    fileReaderDestroy(&reader);
 
     return 0;
 }

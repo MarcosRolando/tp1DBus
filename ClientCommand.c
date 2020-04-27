@@ -6,6 +6,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "stringExtra.h"
+#include <stdio.h>
 
 #define HEADER_BASE_LENGTH 48 //tamanio minimo del header en bytes
 
@@ -15,22 +16,32 @@ static void _deleteParametersSeparator(ClientCommand* this) {
     }
 }
 
-static int _calculateHeaderLength(ClientCommand* this) {
-    int destLength = this->dLenght + 1;//cuento el \0
-    destLength += destLength % 8;
-    int pathLength = this->pathLenght + 1;//cuento el \0
-    pathLength += pathLength % 8;
-    int interLength = this->iLenght + 1;//cuento el \0
-    interLength += interLength % 8;
-    int methLength = this->paraLenght + 1;//cuento el \0
-    methLength += methLength % 8;
+static uint32_t _calculateHeaderLength(ClientCommand* this) {
+    uint32_t destLength = this->dLength + 1;//cuento el \0
+    destLength +=  (8 - destLength % 8); //cuento el padding
+    uint32_t pathLength = this->pathLength + 1;//cuento el \0
+    pathLength += (8 - pathLength % 8);
+    uint32_t interLength = this->iLength + 1;//cuento el \0
+    interLength += (8 - interLength % 8);
+    uint32_t methLength = this->mLength + 1;//cuento el \0
+    methLength += (8 - methLength % 8);
     return (HEADER_BASE_LENGTH + destLength + pathLength + interLength
                                                                 + methLength);
 }
 
-//por ahora me limito a armar la cabecera
+//todo: tengo que avanzar esta funcion para escribir el protocolo
+//por ahora me limito a armar el header
 void clientCommandSetMessage(ClientCommand* this) {
-    _calculateHeaderLength(this);
+    char messageType = 0x01, flag = 0x00, pVersion = 0x01;
+    uint32_t headerLength = _calculateHeaderLength(this);
+    uint32_t bodyLength = htole32(this->paraLength); //no se cuenta el \0
+    char* header = malloc(headerLength*sizeof(char));
+    uint32_t bytesWritten;
+    bytesWritten = snprintf(header, headerLength, "l%c%c%c", messageType,
+                                                                flag, pVersion);
+    bytesWritten += snprintf(header + bytesWritten, headerLength-bytesWritten,
+                                "%s", (char*)(&bodyLength));
+    free(header);
 }
 
 void clientCommandCreate(ClientCommand* this) {
@@ -50,10 +61,11 @@ void clientCommandDestroy(ClientCommand* this) {
 }
 
 void _storeLength(ClientCommand* this) {
-    this->dLenght = strlen(this->destiny);
-    this->pathLenght = strlen(this->path);
-    this->iLenght = strlen(this->interface);
-    this->paraLenght = strlen(this->method);
+    this->dLength = strlen(this->destiny);
+    this->pathLength = strlen(this->path);
+    this->iLength = strlen(this->interface);
+    this->mLength = strlen(this->method);
+    this->paraLength = strlen(this->parameters);
 }
 
 void clientCommandLoadCommand(ClientCommand* this, char* input) {

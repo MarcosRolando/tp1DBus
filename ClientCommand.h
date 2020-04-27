@@ -5,9 +5,11 @@
 #ifndef TP1DBUS_CLIENTCOMMAND_H
 #define TP1DBUS_CLIENTCOMMAND_H
 
+#include <stdint.h>
+
 typedef struct ClientCommand {
     char *destiny, *path, *interface, *method, *parameters;
-    int dLenght, pathLenght, iLenght, mLenght, paraLenght; //no cuentan el \0
+    uint32_t dLength, pathLength, iLength, mLength, paraLength; //no cuentan el \0
 } ClientCommand;
 
 void clientCommandCreate(ClientCommand* this);
