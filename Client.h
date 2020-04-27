@@ -8,6 +8,7 @@
 #include "Socket.h"
 #include "ErrorVerifier.h"
 #include "Messenger.h"
+#include "ClientCommand.h"
 
 typedef struct Client {
     char* host; //hostname
@@ -18,6 +19,8 @@ typedef struct Client {
 } Client;
 
 void clientCreate(Client* this, char* host, char* port);
+
+void clientSend(Client* this, ClientCommand command);
 
 int clientConnect(Client* this);
 
