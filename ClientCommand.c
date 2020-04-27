@@ -22,13 +22,13 @@ static void _deleteParametersSeparator(ClientCommand* this) {
 
 static void _calculateCommandLength(ClientCommand* this) {
     uint32_t destLength = this->dLength + 1;//cuento el \0
-    destLength +=  (8 - destLength % 8); //cuento el padding
+    if (destLength % 8) destLength +=  (8 - destLength % 8); //cuento el padding
     uint32_t pathLength = this->pathLength + 1;//cuento el \0
-    pathLength += (8 - pathLength % 8);
+    if (pathLength % 8) pathLength += (8 - pathLength % 8);
     uint32_t interLength = this->iLength + 1;//cuento el \0
-    interLength += (8 - interLength % 8);
+    if (interLength % 8) interLength += (8 - interLength % 8);
     uint32_t methLength = this->mLength + 1;//cuento el \0
-    methLength += (8 - methLength % 8);
+    if (methLength % 8) methLength += (8 - methLength % 8);
     this->commandLenght = destLength + pathLength + interLength + methLength +
                                                 this->parameterAmount + 1; //esto seria el arrayLength sin los 8 bytes de cada parametro en el PDF
                                                                             //el +1 es del \0 de los parametros
@@ -54,8 +54,8 @@ static void _loadHeaderSettings(ClientCommand* this, char* header,
     *bytesWritten += sizeof(uint32_t);
 }
 
-static void _loadCommand(uint32_t length, char* header, uint32_t* bytesWritten
-                                    , char id, char amount, char* dataType) {
+static void _loadCommand(char* text, uint32_t length, char* header,
+                uint32_t* bytesWritten, char id, char amount, char* dataType) {
     *bytesWritten += snprintf(header + *bytesWritten, 3, "%c%c",
                                                                     id, amount);
     memcpy(header + *bytesWritten, dataType, sizeof(char)*2);
@@ -63,6 +63,10 @@ static void _loadCommand(uint32_t length, char* header, uint32_t* bytesWritten
     length = htole32(length);
     memcpy(header + *bytesWritten, &length, sizeof(uint32_t));
     *bytesWritten += sizeof(uint32_t);
+    uint32_t textLength = strlen(text) + 1;
+    memcpy(header + *bytesWritten, text, sizeof(char)*textLength);
+    if (textLength % 8) textLength += (8 - textLength % 8);
+    *bytesWritten += textLength*sizeof(char); //cuento el padding que tengo que dejar
 }
 
 static void _loadHeaderArray(ClientCommand* this, char* header,
@@ -71,22 +75,21 @@ static void _loadHeaderArray(ClientCommand* this, char* header,
     arrayLength = htole32(arrayLength);
     memcpy(header + *bytesWritten, &arrayLength, sizeof(uint32_t));
     *bytesWritten += sizeof(uint32_t);
-    _loadCommand(this->dLength, header, bytesWritten, 6, 1, "s"); //destiny
-    _loadCommand(this->pathLength, header, bytesWritten, 1, 1, "o"); //path
-    _loadCommand(this->iLength, header, bytesWritten, 2, 1, "s"); //interface
-    _loadCommand(this->mLength, header, bytesWritten, 3, 1, "s"); //method
+    _loadCommand(this->path, this->pathLength, header, bytesWritten, 1, 1, "o"); //path
+    _loadCommand(this->destiny, this->dLength, header, bytesWritten, 6, 1, "s"); //destiny
+    _loadCommand(this->interface, this->iLength, header, bytesWritten, 2, 1, "s"); //interface
+    _loadCommand(this->method, this->mLength, header, bytesWritten, 3, 1, "s"); //method
 }
 
 //todo: tengo que avanzar esta funcion para escribir el protocolo
 //por ahora me limito a armar el header
 void clientCommandSetMessage(ClientCommand* this, uint32_t messageID) {
     uint32_t headerLength = _calculateHeaderLength(this);
-    char* header = malloc(headerLength * sizeof(char));
-    memset(header, 0, headerLength);
     uint32_t bytesWritten = 0;
+    char* header = malloc(headerLength * sizeof(char));
+    memset(header, 0, headerLength * sizeof(char));
     _loadHeaderSettings(this, header, messageID, &bytesWritten); //cargo la parte que no es el array of struct, es decir, primeros 4 bytes y 2 uints
     _loadHeaderArray(this, header, &bytesWritten);
-
     free(header);
 }
 
