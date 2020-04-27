@@ -34,13 +34,14 @@ static uint32_t _calculateHeaderLength(ClientCommand* this) {
 void clientCommandSetMessage(ClientCommand* this) {
     char messageType = 0x01, flag = 0x00, pVersion = 0x01;
     uint32_t headerLength = _calculateHeaderLength(this);
-    uint32_t bodyLength = htole32(this->paraLength); //no se cuenta el \0
+    uint32_t bodyLength = htole32(655360); //no se cuenta el \0
     char* header = malloc(headerLength*sizeof(char));
     uint32_t bytesWritten;
     bytesWritten = snprintf(header, headerLength, "l%c%c%c", messageType,
                                                                 flag, pVersion);
-    bytesWritten += snprintf(header + bytesWritten, headerLength-bytesWritten,
-                                "%s", (char*)(&bodyLength));
+    memcpy(header + bytesWritten, &bodyLength, 4);
+    printf("%x", *(header+4));
+    printf("\n%u", bodyLength);
     free(header);
 }
 
