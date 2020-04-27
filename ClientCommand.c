@@ -54,13 +54,27 @@ static void _loadHeaderSettings(ClientCommand* this, char* header,
     *bytesWritten += sizeof(uint32_t);
 }
 
+static void _loadCommand(uint32_t length, char* header, uint32_t* bytesWritten
+                                    , char id, char amount, char* dataType) {
+    *bytesWritten += snprintf(header + *bytesWritten, 3, "%c%c",
+                                                                    id, amount);
+    memcpy(header + *bytesWritten, dataType, sizeof(char)*2);
+    *bytesWritten += sizeof(char)*2;
+    length = htole32(length);
+    memcpy(header + *bytesWritten, &length, sizeof(uint32_t));
+    *bytesWritten += sizeof(uint32_t);
+}
+
 static void _loadHeaderArray(ClientCommand* this, char* header,
                                                     uint32_t* bytesWritten) {
     uint32_t arrayLength = ARRAY_BASE_LENGTH + this->commandLenght;
     arrayLength = htole32(arrayLength);
     memcpy(header + *bytesWritten, &arrayLength, sizeof(uint32_t));
     *bytesWritten += sizeof(uint32_t);
-    //todo
+    _loadCommand(this->dLength, header, bytesWritten, 6, 1, "s"); //destiny
+    _loadCommand(this->pathLength, header, bytesWritten, 1, 1, "o"); //path
+    _loadCommand(this->iLength, header, bytesWritten, 2, 1, "s"); //interface
+    _loadCommand(this->mLength, header, bytesWritten, 3, 1, "s"); //method
 }
 
 //todo: tengo que avanzar esta funcion para escribir el protocolo
@@ -102,7 +116,7 @@ void _storeLength(ClientCommand* this) {
     this->paraLength = strlen(this->parameters);
 }
 
-void clientCommandLoadCommand(ClientCommand* this, char* input) {
+void clientCommandReadCommand(ClientCommand* this, char* input) {
     concatenateStrings(&(this->destiny), strtok(input, " "));
     concatenateStrings(&(this->path), strtok(NULL, " "));
     concatenateStrings(&(this->interface), strtok(NULL, " "));

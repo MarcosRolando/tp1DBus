@@ -21,7 +21,7 @@ void clientCommandSetMessage(ClientCommand* this, uint32_t messageID);
 
 void clientCommandDestroy(ClientCommand* this);
 
-void clientCommandLoadCommand(ClientCommand* this, char* input);
+void clientCommandReadCommand(ClientCommand* this, char* input);
 
 
 #endif //TP1DBUS_CLIENTCOMMAND_H

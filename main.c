@@ -11,7 +11,7 @@ int main() {
     fileReaderCreate(&reader, stdin);
 
     char* cmd = fileReaderReadFile(&reader);
-    clientCommandLoadCommand(&command, cmd);
+    clientCommandReadCommand(&command, cmd);
 
     Client client;
     clientCreate(&client, "localhost", "8080");
