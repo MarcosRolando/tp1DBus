@@ -14,7 +14,7 @@ typedef struct ClientCommand {
 
 void clientCommandCreate(ClientCommand* this);
 
-void clientCommandSetMessage(ClientCommand* this);
+void clientCommandSetMessage(ClientCommand* this, uint32_t messageID);
 
 void clientCommandDestroy(ClientCommand* this);
 

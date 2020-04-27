@@ -31,17 +31,21 @@ static uint32_t _calculateHeaderLength(ClientCommand* this) {
 
 //todo: tengo que avanzar esta funcion para escribir el protocolo
 //por ahora me limito a armar el header
-void clientCommandSetMessage(ClientCommand* this) {
+void clientCommandSetMessage(ClientCommand* this, uint32_t messageID) {
     char messageType = 0x01, flag = 0x00, pVersion = 0x01;
     uint32_t headerLength = _calculateHeaderLength(this);
-    uint32_t bodyLength = htole32(655360); //no se cuenta el \0
+    uint32_t bodyLength = htole32(this->paraLength); //no se cuenta el \0
+    headerLength = htole32(headerLength);
+    messageID = htole32(messageID);
     char* header = malloc(headerLength*sizeof(char));
     uint32_t bytesWritten;
     bytesWritten = snprintf(header, headerLength, "l%c%c%c", messageType,
                                                                 flag, pVersion);
-    memcpy(header + bytesWritten, &bodyLength, 4);
-    printf("%x", *(header+4));
-    printf("\n%u", bodyLength);
+    memcpy(header + bytesWritten, &bodyLength, sizeof(uint32_t));
+    bytesWritten += sizeof(uint32_t);
+    memcpy(header + bytesWritten, &messageID, sizeof(uint32_t));
+    bytesWritten += sizeof(uint32_t);
+    memcpy(header + bytesWritten, &headerLength, sizeof(uint32_t));
     free(header);
 }
 
