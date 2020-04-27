@@ -28,7 +28,7 @@ int clientConnect(Client* this) {
 }
 
 void clientSend(Client* this, ClientCommand command) {
-    clientCommandSetMessage(&command);
+    clientCommandSetMessage(&command, 0x01);
 }
 
 void clientCreate(Client* this, char* host, char* port) {
