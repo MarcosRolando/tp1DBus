@@ -10,7 +10,7 @@ add_executable(tp1DBus main.c ClientCommand.c FileReader.c
 add_executable(server Server.c Server.h Socket.c Socket.h
         ErrorVerifier.c ErrorVerifier.h Messenger.c Messenger.h serverMain.c)
 
-target_compile_options (tp1DBus PRIVATE -Wall  -pedantic -pedantic-errors
+target_compile_options (tp1DBus PRIVATE -Wall -Werror -pedantic -pedantic-errors
         -O0 -ggdb -DDEBUG -fno-inline)
 
 target_link_options(tp1DBus PRIVATE -lm)
