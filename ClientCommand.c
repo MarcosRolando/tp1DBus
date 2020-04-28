@@ -15,7 +15,7 @@
 #define ARRAY_BASE_LENGTH 32 //tamanio minilo del Array of Struct, no se cuenta el padding de la firma
 
 static void _deleteParametersSeparator(ClientCommand* this) {
-    for (int i = 0; i < (strlen(this->parameters) + 1); ++i) { //quiero contar el \0 xq es otro parametro mas
+    for (int i = 0; i < this->paraLength + 1; ++i) { //quiero contar el \0 xq es otro parametro mas
         if (this->parameters[i] == ',') {
             this->parameters[i] = '\0';
         }
@@ -93,9 +93,13 @@ static void _loadHeaderArray(ClientCommand* this, char* header,
     memcpy(header + *bytesWritten, &arrayLength, sizeof(uint32_t));
     *bytesWritten += sizeof(uint32_t);
     _loadCommand(this->path, this->pathLength, header, bytesWritten, 1, 1, "o"); //path
+    char* tr1 = header + *bytesWritten;
     _loadCommand(this->destiny, this->dLength, header, bytesWritten, 6, 1, "s"); //destiny
+    char* tr2 = header + *bytesWritten;
     _loadCommand(this->interface, this->iLength, header, bytesWritten, 2, 1, "s"); //interface
+    char* tr3 = header + *bytesWritten;
     _loadCommand(this->method, this->mLength, header, bytesWritten, 3, 1, "s"); //method
+    char* tr4 = header + *bytesWritten;
     if (this->parameterAmount != 0) _loadFirm(header, bytesWritten, 8, 1, "g", this->parameterAmount);
 }
 
@@ -144,6 +148,6 @@ void clientCommandReadCommand(ClientCommand* this, char* input) {
     concatenateStrings(&(this->interface), strtok(NULL, " "));
     concatenateStrings(&(this->method), strtok(NULL, "("));
     concatenateStrings(&(this->parameters), strtok(NULL, ")\n"));
-    if (this->parameters != NULL) _deleteParametersSeparator(this);
     _storeLength(this);
+    if (this->paraLength != 0) _deleteParametersSeparator(this);
 }
