@@ -29,9 +29,13 @@ int clientConnect(Client* this) {
 }
 
 void clientSend(Client* this, ClientCommand command) {
-    char* header = clientCommandGetHeader(&command, 0x01);
+    char* header = NULL;
+    uint32_t length = clientCommandGetHeader(&command, &header, 0x01);
+    messengerSend(&this->courier, &this->socket, header, length);
     free(header);
-    char* body = clientCommandGetBody(&command);
+    char* body = NULL;
+    length = clientCommandGetBody(&command, &body);
+    messengerSend(&this->courier, &this->socket, body, length);
     free(body);
 }
 

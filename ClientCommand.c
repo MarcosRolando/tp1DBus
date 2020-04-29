@@ -31,7 +31,7 @@ static void _calculateCommandLength(ClientCommand* this) {
     uint32_t interLength = this->iLength + 1;//cuento el \0
     if (interLength % 8) interLength += (8 - interLength % 8);
     uint32_t methLength = this->mLength + 1;//cuento el \0
-    if (methLength % 8) methLength += (8 - methLength % 8);
+    if (methLength % 8 && this->parameters != 0) methLength += (8 - methLength % 8); //el parameters es para no contar el padding si no hay parametros
     this->commandLength = destLength + pathLength + interLength + methLength;
     if (this->parameters != 0) this->commandLength += this->parameterAmount + 1; //el +1 es del \0 de los parametros
 }
@@ -99,16 +99,14 @@ static void _loadHeaderArray(ClientCommand* this, char* header,
     if (this->parameterAmount != 0) _loadFirm(header, bytesWritten, 8, 1, "g", this->parameterAmount);
 }
 
-//todo: tengo que avanzar esta funcion para escribir el protocolo
-//por ahora me limito a armar el header
-char* clientCommandGetHeader(ClientCommand* this, uint32_t messageID) {
+uint32_t clientCommandGetHeader(ClientCommand* this, char** header, uint32_t messageID) {
     uint32_t headerLength = _calculateHeaderLength(this);
     uint32_t bytesWritten = 0;
-    char* header = malloc(headerLength * sizeof(char));
-    memset(header, 0, headerLength * sizeof(char));
-    _loadHeaderSettings(this, header, messageID, &bytesWritten); //cargo la parte que no es el array of struct, es decir, primeros 4 bytes y 2 uints
-    _loadHeaderArray(this, header, &bytesWritten);
-    return header;
+    *header = malloc(headerLength * sizeof(char));
+    memset(*header, 0, headerLength * sizeof(char));
+    _loadHeaderSettings(this, *header, messageID, &bytesWritten); //cargo la parte que no es el array of struct, es decir, primeros 4 bytes y 2 uints
+    _loadHeaderArray(this, *header, &bytesWritten);
+    return headerLength;
 }
 
 static void _loadParameter(ClientCommand* this, char* body, uint32_t* bytesWritten) {
@@ -121,18 +119,18 @@ static void _loadParameter(ClientCommand* this, char* body, uint32_t* bytesWritt
     this->parameters += length + 1;
 }
 
-char* clientCommandGetBody(ClientCommand* this) {
+uint32_t clientCommandGetBody(ClientCommand* this, char** body) {
     if (this->parameterAmount != 0) {
         uint32_t bodyLength = (this->parameterAmount * sizeof(uint32_t))
                               + this->paraLength + 1; //+1 por el \0
-        char* body = malloc(bodyLength*sizeof(char));
+        *body = malloc(bodyLength*sizeof(char));
         uint32_t bytesWritten = 0;
         for (int i = 0; i < this->parameterAmount; ++i) {
-            _loadParameter(this, body, &bytesWritten);
+            _loadParameter(this, *body, &bytesWritten);
         }
-        return body;
+        return bodyLength;
     }
-    return NULL;
+    return 0;
 }
 
 void clientCommandCreate(ClientCommand* this) {

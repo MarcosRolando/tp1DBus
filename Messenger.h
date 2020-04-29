@@ -14,7 +14,7 @@ typedef struct Messenger {
 
 void messengerCreate(Messenger* this);
 
-void messengerSend(Messenger* this, Socket* socket, char* message);
+void messengerSend(Messenger* this, Socket* socket, char* message, size_t length);
 
 char* recibirMensajePrueba(Messenger* this, Socket* socket);
 

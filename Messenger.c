@@ -12,8 +12,7 @@ void messengerCreate(Messenger* this) {
     errorVerifierCreate(&this->eVerifier);
 }
 
-void messengerSend(Messenger* this, Socket* socket, char* message) {
-    int length = strlen(message) + 1; //+1 porque debe enviar el \0 tambien
+void messengerSend(Messenger* this, Socket* socket, char* message, size_t length) {
     int destiny = socketGetFileDescriptor(socket);
     int bytesSent = 0, s = 0;
     bool lostConection = false;
