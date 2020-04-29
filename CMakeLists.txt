@@ -13,7 +13,7 @@ target_compile_options (tp1DBus PRIVATE -std=c99 -Wall -Werror -pedantic -pedant
 
 target_link_options(tp1DBus PRIVATE -lm)
 
-target_compile_options (server PRIVATE -Wall -Werror -pedantic -pedantic-errors
+target_compile_options (server PRIVATE -std=c99 -Wall -Werror -pedantic -pedantic-errors
         -O0 -ggdb -DDEBUG -fno-inline)
 
 target_link_options(server PRIVATE -lm)
