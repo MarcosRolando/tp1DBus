@@ -18,7 +18,7 @@ void messengerSend(Messenger* this, Socket* socket, char* message, size_t length
     int s = 0;
 
     while (bytesSent < length) {
-        s = send(destiny, message, length - bytesSent, MSG_NOSIGNAL);
+        s = send(destiny, message + bytesSent, length - bytesSent, MSG_NOSIGNAL);
         errorVerifierSend(&this->eVerifier, s);
         bytesSent += s;
     }
@@ -30,7 +30,7 @@ void messengerReceive(Messenger* this, Socket* socket, char** message, size_t le
     int s = 0;
 
     while (bytesReceived < length) {
-        s = recv(source, *message, length - bytesReceived, 0);
+        s = recv(source, *message + bytesReceived, length - bytesReceived, 0);
         errorVerifierReceive(&this->eVerifier, s);
         bytesReceived += s;
     }

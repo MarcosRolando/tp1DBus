@@ -45,9 +45,8 @@ static struct addrinfo* _getAddresses(Server* this) {
 void _receiveMessage(Server* this, Socket* peer) {
     while (1) {
         char* message = NULL;
-        //size_t length = commandReceiverGetBuffer(&this->cReceiver, &message);
-        message = malloc(sizeof(char)*16);
-        messengerReceive(&this->courier, peer, &message, 16);
+        size_t length = commandReceiverGetBuffer(&this->cReceiver, &message);
+        messengerReceive(&this->courier, peer, &message, length);
         commandReceiverProcess(&this->cReceiver, message);
     }
 }
