@@ -22,7 +22,7 @@ void commandPrinterSetID(CommandPrinter* this, uint32_t messageID) {
 
 static void _set(char** string, char* buffer, uint32_t length) {
     *string = malloc(sizeof(char)*length);
-    memset(*string, 0, length);
+    memset(*string, 0, sizeof(char)*length);
     snprintf(*string, length, "%s", buffer);
 }
 
@@ -41,6 +41,7 @@ void commandPrinterSetBodyData(CommandPrinter* this, char* buffer, uint32_t leng
 
 void commandPrinterSetParameterAmount(CommandPrinter* this, char amount) {
     this->parameters = malloc(sizeof(char*)*amount);
+    memset(this->parameters, 0, sizeof(char)*amount);
 }
 
 void commandPrinterDestroy(CommandPrinter* this) {

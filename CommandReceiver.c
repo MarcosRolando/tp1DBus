@@ -108,6 +108,10 @@ size_t commandReceiverGetBuffer(CommandReceiver* this, char** buffer) {
     return 0;
 }
 
+bool commandReceiverFinished(CommandReceiver* this) {
+    return (this->readPreHeader && this->readHeader && this->readBody);
+}
+
 void commandReceiverDestroy(CommandReceiver* this) {
     commandPrinterDestroy(&this->cPrinter);
 }

@@ -43,7 +43,7 @@ static struct addrinfo* _getAddresses(Server* this) {
 }
 
 void _receiveMessage(Server* this, Socket* peer) {
-    while (1) {
+    while (!commandReceiverFinished(&this->cReceiver)) {
         char* message = NULL;
         size_t length = commandReceiverGetBuffer(&this->cReceiver, &message);
         messengerReceive(&this->courier, peer, &message, length);
