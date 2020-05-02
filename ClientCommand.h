@@ -13,6 +13,7 @@ typedef struct ClientCommand {
     uint32_t parameterAmount;
     uint32_t commandLength; //esto solo cuenta el largo de los comandos (\0 incluido)
                         // sin tener en cuenta el padding de los parametros por cada s
+    char* header, *body;
 } ClientCommand;
 
 void clientCommandCreate(ClientCommand* this);

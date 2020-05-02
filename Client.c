@@ -7,7 +7,6 @@
 #include "Client.h"
 #include <netdb.h>
 #include <string.h>
-#include <stdlib.h>
 
 static struct addrinfo* _getAddresses(Client* this) {
     struct addrinfo hints, *result;
@@ -28,15 +27,13 @@ int clientConnect(Client* this) {
     return 0;
 }
 
-void clientSend(Client* this, ClientCommand command) {
+void clientSend(Client* this, ClientCommand* command) {
     char* header = NULL;
-    uint32_t length = clientCommandGetHeader(&command, &header, 0x01);
+    uint32_t length = clientCommandGetHeader(command, &header, 0x01);
     messengerSend(&this->courier, &this->socket, header, length);
-    free(header);
     char* body = NULL;
-    length = clientCommandGetBody(&command, &body);
+    length = clientCommandGetBody(command, &body);
     messengerSend(&this->courier, &this->socket, body, length);
-    free(body);
 }
 
 void clientCreate(Client* this, char* host, char* port) {

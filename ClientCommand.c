@@ -92,11 +92,16 @@ static void _loadHeaderArray(ClientCommand* this, char* header,
     arrayLength = htole32(arrayLength);
     memcpy(header + *bytesWritten, &arrayLength, sizeof(uint32_t));
     *bytesWritten += sizeof(uint32_t);
-    _loadCommand(this->path, this->pathLength, header, bytesWritten, 1, 1, "o"); //path
-    _loadCommand(this->destiny, this->dLength, header, bytesWritten, 6, 1, "s"); //destiny
-    _loadCommand(this->interface, this->iLength, header, bytesWritten, 2, 1, "s"); //interface
-    _loadCommand(this->method, this->mLength, header, bytesWritten, 3, 1, "s"); //method
-    if (this->parameterAmount != 0) _loadFirm(header, bytesWritten, 8, 1, "g", this->parameterAmount);
+    _loadCommand(this->path, this->pathLength, header, bytesWritten, 1,
+                                                1, "o"); //path
+    _loadCommand(this->destiny, this->dLength, header, bytesWritten, 6,
+                                            1, "s"); //destiny
+    _loadCommand(this->interface, this->iLength, header, bytesWritten, 2,
+                                            1, "s"); //interface
+    _loadCommand(this->method, this->mLength, header, bytesWritten, 3,
+                                                1, "s"); //method
+    if (this->parameterAmount != 0) _loadFirm(header, bytesWritten, 8,
+                                1, "g", this->parameterAmount);
 }
 
 uint32_t clientCommandGetHeader(ClientCommand* this, char** header, uint32_t messageID) {
@@ -106,6 +111,7 @@ uint32_t clientCommandGetHeader(ClientCommand* this, char** header, uint32_t mes
     memset(*header, 0, headerLength * sizeof(char));
     _loadHeaderSettings(this, *header, messageID, &bytesWritten); //cargo la parte que no es el array of struct, es decir, primeros 4 bytes y 2 uints
     _loadHeaderArray(this, *header, &bytesWritten);
+    this->header = *header;
     return headerLength;
 }
 
@@ -125,9 +131,12 @@ uint32_t clientCommandGetBody(ClientCommand* this, char** body) {
                               + this->paraLength + 1; //+1 por el \0
         *body = malloc(bodyLength*sizeof(char));
         uint32_t bytesWritten = 0;
+        char* parametersBackUp = this->parameters; //asi no pierdo el puntero a los parametros para poder liberar la memoria
         for (int i = 0; i < this->parameterAmount; ++i) {
             _loadParameter(this, *body, &bytesWritten);
         }
+        this->parameters = parametersBackUp;
+        this->body = *body;
         return bodyLength;
     }
     return 0;
@@ -139,6 +148,8 @@ void clientCommandCreate(ClientCommand* this) {
     this->interface = NULL;
     this->method = NULL;
     this->parameters = NULL;
+    this->header = NULL;
+    this->body = NULL;
     this->parameterAmount = 0;
     this->commandLength = 0;
 }
@@ -149,6 +160,8 @@ void clientCommandDestroy(ClientCommand* this) {
     free(this->interface);
     free(this->method);
     free(this->parameters);
+    free(this->header);
+    free(this->body);
 }
 
 void _storeLength(ClientCommand* this) {
