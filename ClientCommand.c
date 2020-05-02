@@ -45,17 +45,17 @@ static uint32_t _calculateHeaderLength(ClientCommand* this) {
 }
 
 static void _loadHeaderSettings(ClientCommand* this, char* header,
-                                uint32_t messageID, uint32_t* bytesWritten) {
+                                                    uint32_t* bytesWritten) {
     char endiannes = 'l', messageType = 0x01, flag = 0x00, pVersion = 0x01;
     uint32_t bodyLength = 0;
     if (this->parameterAmount != 0) bodyLength = htole32(this->paraLength +
                                                     4*this->parameterAmount + 1); //+1 del /0 final
-    messageID = htole32(messageID);
+    this->messageID = htole32(this->messageID);
     *bytesWritten = snprintf(header, 5, "%c%c%c%c",
                                         endiannes, messageType, flag, pVersion);
     memcpy(header + *bytesWritten, &bodyLength, sizeof(uint32_t));
     *bytesWritten += sizeof(uint32_t);
-    memcpy(header + *bytesWritten, &messageID, sizeof(uint32_t));
+    memcpy(header + *bytesWritten, &this->messageID, sizeof(uint32_t));
     *bytesWritten += sizeof(uint32_t);
 }
 
@@ -105,12 +105,12 @@ static void _loadHeaderArray(ClientCommand* this, char* header,
                                 1, "g", this->parameterAmount);
 }
 
-uint32_t clientCommandGetHeader(ClientCommand* this, char** header, uint32_t messageID) {
+uint32_t clientCommandGetHeader(ClientCommand* this, char** header) {
     uint32_t headerLength = _calculateHeaderLength(this);
     uint32_t bytesWritten = 0;
     *header = malloc(headerLength * sizeof(char));
     memset(*header, 0, headerLength * sizeof(char));
-    _loadHeaderSettings(this, *header, messageID, &bytesWritten); //cargo la parte que no es el array of struct, es decir, primeros 4 bytes y 2 uints
+    _loadHeaderSettings(this, *header, &bytesWritten); //cargo la parte que no es el array of struct, es decir, primeros 4 bytes y 2 uints
     _loadHeaderArray(this, *header, &bytesWritten);
     this->header = *header;
     return headerLength;
@@ -143,7 +143,7 @@ uint32_t clientCommandGetBody(ClientCommand* this, char** body) {
     return 0;
 }
 
-void clientCommandCreate(ClientCommand* this) {
+void clientCommandCreate(ClientCommand* this, uint32_t messageID) {
     this->destiny = NULL;
     this->path = NULL;
     this->interface = NULL;
@@ -151,6 +151,7 @@ void clientCommandCreate(ClientCommand* this) {
     this->parameters = NULL;
     this->header = NULL;
     this->body = NULL;
+    this->messageID = messageID;
     this->parameterAmount = 0;
     this->commandLength = 0;
 }

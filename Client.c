@@ -27,13 +27,18 @@ int clientConnect(Client* this) {
     return 0;
 }
 
-void clientSend(Client* this, ClientCommand* command, uint32_t messageID) {
+static void _receiveConfirmationMessage(Client* this, char confirmMessage[]) {
+    messengerReceive(&this->courier, &this->socket, &confirmMessage, 3);
+}
+
+void clientSend(Client* this, ClientCommand* command, char confirmMessage[]) {
     char* header = NULL;
-    uint32_t length = clientCommandGetHeader(command, &header, messageID);
+    uint32_t length = clientCommandGetHeader(command, &header);
     messengerSend(&this->courier, &this->socket, header, length);
     char* body = NULL;
     length = clientCommandGetBody(command, &body);
     messengerSend(&this->courier, &this->socket, body, length);
+    _receiveConfirmationMessage(this, confirmMessage);
 }
 
 void clientCreate(Client* this, char* host, char* port) {

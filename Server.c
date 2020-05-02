@@ -6,7 +6,6 @@
 //
 #define _POSIX_C_SOURCE 200112L
 
-#include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <netdb.h>
@@ -41,6 +40,11 @@ static struct addrinfo* _getAddresses(Server* this) {
     return result;
 }
 
+static void _returnConfirmationMessage(Server* this) {
+    char* message = "OK\n";
+    messengerSend(&this->courier, &this->peer, message, 4);
+}
+
 void serverReceive(Server* this, CommandReceiver* cReceiver) {
     while (!commandReceiverFinished(cReceiver)) {
         char* message = NULL;
@@ -48,6 +52,7 @@ void serverReceive(Server* this, CommandReceiver* cReceiver) {
         messengerReceive(&this->courier, &this->peer, &message, length);
         commandReceiverProcess(cReceiver, message);
     }
+    _returnConfirmationMessage(this);
 }
 
 void serverConnect(Server* this) {
