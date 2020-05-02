@@ -1,0 +1,76 @@
+//
+// Created by marcos on 2/5/20.
+//
+
+#define _DEFAULT_SOURCE
+
+#include "CommandReceiver.h"
+#include <stdlib.h>
+#include <string.h>
+
+void commandReceiverCreate(CommandReceiver* this) {
+    commandPrinterCreate(&this->cPrinter);
+    this->readBody = false;
+    this->readHeader = false;
+    this->readPreHeader = false;
+}
+
+static void _processPreHeader(CommandReceiver* this, char* command) {
+    uint32_t bytesRead = 4; //me salteo los 4 primeros xq no me sirven
+    this->bodyLength = *((uint32_t*) (command + bytesRead));
+    bytesRead += sizeof(uint32_t);
+    this->bodyLength = le32toh(this->bodyLength);
+    uint32_t messageID = *((uint32_t*) (command + bytesRead));
+    bytesRead += 4;
+    commandPrinterSetID(&this->cPrinter, le32toh(messageID));
+    this->headerLength = *((uint32_t*) (command + bytesRead));
+    if (this->headerLength % 8) this->headerLength += (8 - this->headerLength%8);
+    this->headerLength = le32toh(this->headerLength); //cuento el padding del final
+}
+
+static uint32_t _processData(CommandReceiver* this, char* command) {
+    char type = *command; //leo que parte del comando es path, dest, etc
+    uint32_t bytesRead = 4;
+    uint32_t length = *((uint32_t*) (command + bytesRead));
+    length = le32toh(length) + 1; //+1 xq no toma en cuenta el /0 lo que leo
+    bytesRead += 4;
+    commandPrinterSetData(&this->cPrinter, command + bytesRead, length, type);
+    if (length % 8) length += 8 - length % 8;
+    bytesRead += length;
+    return bytesRead;
+}
+
+static void _processHeader(CommandReceiver* this, char* command) {
+    uint32_t bytesRead = 0;
+    while (1) {
+        bytesRead += _processData(this, command + bytesRead);
+    }
+}
+
+void commandReceiverProcess(CommandReceiver* this, char* command) {
+    if (!this->readPreHeader) {
+        _processPreHeader(this, command);
+        this->readPreHeader = true;
+    } else if (!this->readHeader) {
+        _processHeader(this, command);
+        this->readHeader = true;
+    }
+    free(command);
+}
+
+size_t commandReceiverGetBuffer(CommandReceiver* this, char** buffer) {
+    if (!this->readPreHeader) {
+        *buffer = malloc(sizeof(char)*16);
+        memset(*buffer, 0, 16);
+        return 16;
+    } else if (!this->readHeader) {
+        *buffer = malloc(sizeof(char)*this->headerLength);
+        memset(*buffer, 0, this->headerLength);
+        return this->headerLength;
+    }
+    return 0;
+}
+
+void commandReceiverDestroy(CommandReceiver* this) {
+    commandPrinterDestroy(&this->cPrinter);
+}
