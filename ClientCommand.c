@@ -48,7 +48,8 @@ static void _loadHeaderSettings(ClientCommand* this, char* header,
                                 uint32_t messageID, uint32_t* bytesWritten) {
     char endiannes = 'l', messageType = 0x01, flag = 0x00, pVersion = 0x01;
     uint32_t bodyLength = 0;
-    if (this->parameterAmount != 0) bodyLength = htole32(this->paraLength + 5); //4 bytes indicando la longitud + el byte del \0
+    if (this->parameterAmount != 0) bodyLength = htole32(this->paraLength +
+                                                    4*this->parameterAmount + 1); //+1 del /0 final
     messageID = htole32(messageID);
     *bytesWritten = snprintf(header, 5, "%c%c%c%c",
                                         endiannes, messageType, flag, pVersion);
