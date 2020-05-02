@@ -13,14 +13,15 @@
 typedef struct Server {
     char* port;
     Messenger courier;
-    Socket socket;
-    CommandReceiver cReceiver;
+    Socket socket, peer;
     ErrorVerifier eVerifier;
 } Server;
 
 void serverCreate(Server* this, char* port);
 
 void serverConnect(Server* this);
+
+void serverReceive(Server* this, CommandReceiver* cReceiver);
 
 void serverDestroy(Server* this);
 

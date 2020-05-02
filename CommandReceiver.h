@@ -23,6 +23,8 @@ void commandReceiverProcess(CommandReceiver* this, char* command);
 
 size_t commandReceiverGetBuffer(CommandReceiver* this, char** buffer);
 
+void commandReceiverPrint(CommandReceiver* this);
+
 bool commandReceiverFinished(CommandReceiver* this);
 
 void commandReceiverDestroy(CommandReceiver* this);

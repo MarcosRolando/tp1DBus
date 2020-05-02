@@ -27,9 +27,9 @@ int clientConnect(Client* this) {
     return 0;
 }
 
-void clientSend(Client* this, ClientCommand* command) {
+void clientSend(Client* this, ClientCommand* command, uint32_t messageID) {
     char* header = NULL;
-    uint32_t length = clientCommandGetHeader(command, &header, 0x01);
+    uint32_t length = clientCommandGetHeader(command, &header, messageID);
     messengerSend(&this->courier, &this->socket, header, length);
     char* body = NULL;
     length = clientCommandGetBody(command, &body);

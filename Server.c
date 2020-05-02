@@ -19,14 +19,13 @@ void serverCreate(Server* this, char* port) {
     socketCreate(&this->socket);
     messengerCreate(&this->courier);
     errorVerifierCreate(&this->eVerifier);
-    commandReceiverCreate(&this->cReceiver);
 }
 
 void serverDestroy(Server* this) {
     socketDestroy(&this->socket);
+    socketDestroy(&this->peer);
     messengerDestroy(&this->courier);
     errorVerifierDestroy(&this->eVerifier);
-    commandReceiverDestroy(&this->cReceiver);
 }
 
 static struct addrinfo* _getAddresses(Server* this) {
@@ -42,12 +41,12 @@ static struct addrinfo* _getAddresses(Server* this) {
     return result;
 }
 
-void _receiveMessage(Server* this, Socket* peer) {
-    while (!commandReceiverFinished(&this->cReceiver)) {
+void serverReceive(Server* this, CommandReceiver* cReceiver) {
+    while (!commandReceiverFinished(cReceiver)) {
         char* message = NULL;
-        size_t length = commandReceiverGetBuffer(&this->cReceiver, &message);
-        messengerReceive(&this->courier, peer, &message, length);
-        commandReceiverProcess(&this->cReceiver, message);
+        size_t length = commandReceiverGetBuffer(cReceiver, &message);
+        messengerReceive(&this->courier, &this->peer, &message, length);
+        commandReceiverProcess(cReceiver, message);
     }
 }
 
@@ -56,6 +55,5 @@ void serverConnect(Server* this) {
     socketBind(&this->socket, addresses);
     freeaddrinfo(addresses); //en este punto ya logre bindear al socket y puedo empezar a aceptar conexiones
     socketMaxListen(&this->socket, MAX_LISTENERS);
-    Socket peer = socketAccept(&this->socket); //acepto la conexion
-    _receiveMessage(this, &peer); //recibo el mensaje
+    this->peer = socketAccept(&this->socket); //acepto la conexion
 }

@@ -16,7 +16,7 @@ int main() {
     Client client;
     clientCreate(&client, "localhost", "8080");
     clientConnect(&client);
-    clientSend(&client, &command);
+    clientSend(&client, &command, 0x01);
     clientDestroy(&client);
     clientCommandDestroy(&command);
     fileReaderDestroy(&reader);

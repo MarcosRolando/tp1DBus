@@ -20,7 +20,7 @@ typedef struct Client {
 
 void clientCreate(Client* this, char* host, char* port);
 
-void clientSend(Client* this, ClientCommand* command);
+void clientSend(Client* this, ClientCommand* command, uint32_t messageID);
 
 int clientConnect(Client* this);
 

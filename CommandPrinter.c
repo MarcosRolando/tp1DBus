@@ -40,8 +40,24 @@ void commandPrinterSetBodyData(CommandPrinter* this, char* buffer, uint32_t leng
 }
 
 void commandPrinterSetParameterAmount(CommandPrinter* this, char amount) {
-    this->parameters = malloc(sizeof(char*)*amount);
-    memset(this->parameters, 0, sizeof(char)*amount);
+    if (amount > 0) {
+        this->parameters = malloc(sizeof(char*)*amount);
+        memset(this->parameters, 0, sizeof(char)*amount);
+    }
+}
+
+void commandPrinterPrint(CommandPrinter* this) {
+    printf("* Id: 0x%08x\n", this->messageID);
+    printf("* Destino: %s\n", this->destiny);
+    printf("* Ruta: %s\n", this->path);
+    printf("* Interfaz: %s\n", this->interface);
+    printf("* Metodo: %s\n", this->method);
+    if (this->parametersStored > 0) {
+        printf("* Parametros:\n");
+        for (int i = 0; i < this->parametersStored; ++i) {
+            printf("    * %s\n", *(this->parameters + i));
+        }
+    }
 }
 
 void commandPrinterDestroy(CommandPrinter* this) {

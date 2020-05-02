@@ -13,6 +13,7 @@ void commandReceiverCreate(CommandReceiver* this) {
     this->readBody = false;
     this->readHeader = false;
     this->readPreHeader = false;
+    this->parameterAmount = 0;
 }
 
 static void _processPreHeader(CommandReceiver* this, char* command) {
@@ -89,6 +90,10 @@ void commandReceiverProcess(CommandReceiver* this, char* command) {
         this->readBody = true;
     }
     free(command);
+}
+
+void commandReceiverPrint(CommandReceiver* this) {
+    commandPrinterPrint(&this->cPrinter);
 }
 
 size_t commandReceiverGetBuffer(CommandReceiver* this, char** buffer) {

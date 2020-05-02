@@ -23,6 +23,8 @@ void commandPrinterSetBodyData(CommandPrinter* this, char* buffer, uint32_t leng
 
 void commandPrinterSetParameterAmount(CommandPrinter* this, char amount);
 
+void commandPrinterPrint(CommandPrinter* this);
+
 void commandPrinterDestroy(CommandPrinter* this);
 
 #endif //TP1DBUS_COMMANDPRINTER_H
