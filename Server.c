@@ -6,9 +6,7 @@
 //
 #define _POSIX_C_SOURCE 200112L
 
-#include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <netdb.h>
@@ -21,12 +19,14 @@ void serverCreate(Server* this, char* port) {
     socketCreate(&this->socket);
     messengerCreate(&this->courier);
     errorVerifierCreate(&this->eVerifier);
+    commandReceiverCreate(&this->cReceiver);
 }
 
 void serverDestroy(Server* this) {
     socketDestroy(&this->socket);
     messengerDestroy(&this->courier);
     errorVerifierDestroy(&this->eVerifier);
+    commandReceiverDestroy(&this->cReceiver);
 }
 
 static struct addrinfo* _getAddresses(Server* this) {
@@ -42,16 +42,21 @@ static struct addrinfo* _getAddresses(Server* this) {
     return result;
 }
 
+void _receiveMessage(Server* this, Socket* peer) {
+    while (1) {
+        char* message = NULL;
+        //size_t length = commandReceiverGetBuffer(&this->cReceiver, &message);
+        message = malloc(sizeof(char)*16);
+        messengerReceive(&this->courier, peer, &message, 16);
+        commandReceiverProcess(&this->cReceiver, message);
+    }
+}
 
-int serverConnect(Server* this) {
+void serverConnect(Server* this) {
     struct addrinfo* addresses = _getAddresses(this);
     socketBind(&this->socket, addresses);
     freeaddrinfo(addresses); //en este punto ya logre bindear al socket y puedo empezar a aceptar conexiones
     socketMaxListen(&this->socket, MAX_LISTENERS);
-    Socket peer = socketAccept(&this->socket);
-    char* message = recibirMensajePrueba(&this->courier, &peer);
-    printf("%s", message);
-    free(message);
-    socketDestroy(&peer);
-    return 0;
+    Socket peer = socketAccept(&this->socket); //acepto la conexion
+    _receiveMessage(this, &peer); //recibo el mensaje
 }

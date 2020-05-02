@@ -16,7 +16,7 @@ void messengerCreate(Messenger* this);
 
 void messengerSend(Messenger* this, Socket* socket, char* message, size_t length);
 
-char* recibirMensajePrueba(Messenger* this, Socket* socket);
+void messengerReceive(Messenger* this, Socket* socket, char** message, size_t length);
 
 void messengerDestroy(Messenger* this);
 

@@ -6,7 +6,8 @@ add_executable(tp1DBus main.c ClientCommand.c FileReader.c
         ErrorVerifier.c ErrorVerifier.h Messenger.c Messenger.h)
 
 add_executable(server Server.c Server.h Socket.c Socket.h
-        ErrorVerifier.c ErrorVerifier.h Messenger.c Messenger.h serverMain.c)
+        ErrorVerifier.c ErrorVerifier.h Messenger.c Messenger.h serverMain.c
+        CommandReceiver.c CommandReceiver.h CommandPrinter.c CommandPrinter.h)
 
 target_compile_options (tp1DBus PRIVATE -std=c99 -Wall -Werror -pedantic -pedantic-errors
         -O0 -ggdb -DDEBUG -fno-inline)

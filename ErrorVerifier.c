@@ -25,6 +25,13 @@ void errorVerifierSend(ErrorVerifier* this, int flag) {
     }
 }
 
+void errorVerifierReceive(ErrorVerifier* this, int flag) {
+    if (flag == -1) {
+        fprintf(stderr, "Error in receive: %s\n", strerror(errno));
+        exit(EXIT_FAILURE);
+    }
+}
+
 void errorVerifierConnect(ErrorVerifier* this, struct addrinfo* rp) {
     if (rp == NULL) {               /* No address succeeded */
         fprintf(stderr, "Could not connect\n");

@@ -8,17 +8,19 @@
 #include "Socket.h"
 #include "ErrorVerifier.h"
 #include "Messenger.h"
+#include "CommandReceiver.h"
 
 typedef struct Server {
     char* port;
     Messenger courier;
     Socket socket;
+    CommandReceiver cReceiver;
     ErrorVerifier eVerifier;
 } Server;
 
 void serverCreate(Server* this, char* port);
 
-int serverConnect(Server* this);
+void serverConnect(Server* this);
 
 void serverDestroy(Server* this);
 

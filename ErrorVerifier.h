@@ -17,6 +17,8 @@ void errorVerifierCreate(ErrorVerifier* this);
 
 void errorVerifierSend(ErrorVerifier* this, int flag);
 
+void errorVerifierReceive(ErrorVerifier* this, int flag);
+
 void errorVerifierDestroy(ErrorVerifier* this);
 
 void errorVerifierGetAddrInfo(ErrorVerifier* this, int flag);

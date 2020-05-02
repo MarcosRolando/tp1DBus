@@ -14,26 +14,26 @@ void messengerCreate(Messenger* this) {
 
 void messengerSend(Messenger* this, Socket* socket, char* message, size_t length) {
     int destiny = socketGetFileDescriptor(socket);
-    int bytesSent = 0, s = 0;
-    bool lostConection = false;
+    size_t bytesSent = 0;
+    int s = 0;
 
-    while (!lostConection && (bytesSent < length)) {
+    while (bytesSent < length) {
         s = send(destiny, message, length - bytesSent, MSG_NOSIGNAL);
         errorVerifierSend(&this->eVerifier, s);
         bytesSent += s;
     }
 }
 
-char* recibirMensajePrueba(Messenger* this, Socket* socket) {
+void messengerReceive(Messenger* this, Socket* socket, char** message, size_t length) {
     int source = socketGetFileDescriptor(socket);
-    int bytesRecieved = 0, s = 0;
-    char* buff = malloc(sizeof(char)*6);
-    memset(buff, 0, 6);
-    while (bytesRecieved < 5 && s != -1) {
-        s = recv(source, buff, 5 - bytesRecieved, 0);
-        if (s!=-1) bytesRecieved += s;
+    size_t bytesReceived = 0;
+    int s = 0;
+
+    while (bytesReceived < length) {
+        s = recv(source, *message, length - bytesReceived, 0);
+        errorVerifierReceive(&this->eVerifier, s);
+        bytesReceived += s;
     }
-    return buff;
 }
 
 void messengerDestroy(Messenger* this) {
