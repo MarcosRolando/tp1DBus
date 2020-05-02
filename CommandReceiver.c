@@ -28,22 +28,52 @@ static void _processPreHeader(CommandReceiver* this, char* command) {
     this->headerLength = le32toh(this->headerLength); //cuento el padding del final
 }
 
-static uint32_t _processData(CommandReceiver* this, char* command) {
-    char type = *command; //leo que parte del comando es path, dest, etc
+static uint32_t _processMainHeaderData(CommandReceiver* this, char* command, char type) {
     uint32_t bytesRead = 4;
     uint32_t length = *((uint32_t*) (command + bytesRead));
     length = le32toh(length) + 1; //+1 xq no toma en cuenta el /0 lo que leo
     bytesRead += 4;
-    commandPrinterSetData(&this->cPrinter, command + bytesRead, length, type);
+    commandPrinterSetHeaderData(&this->cPrinter, command + bytesRead, length, type);
     if (length % 8) length += 8 - length % 8;
     bytesRead += length;
     return bytesRead;
 }
 
+static uint32_t _processOptionalHeaderData(CommandReceiver* this, char* command) {
+    uint32_t bytesRead = 4; //los primeros 4 me dan igual
+    this->parameterAmount = *(command + bytesRead);
+    bytesRead += 1 + this->parameterAmount + 1; //+1 del byte recien leido y +1 del /0
+    if (bytesRead % 8) bytesRead += 8 - bytesRead % 8;
+    return bytesRead;
+}
+
+static uint32_t _processHeaderData(CommandReceiver* this, char* command) {
+    char type = *command; //leo que parte del comando es path, dest, etc
+    if (type != 0x08) return _processMainHeaderData(this, command, type);
+    else return _processOptionalHeaderData(this, command); //la firma
+}
+
 static void _processHeader(CommandReceiver* this, char* command) {
     uint32_t bytesRead = 0;
-    while (1) {
-        bytesRead += _processData(this, command + bytesRead);
+    while (bytesRead < this->headerLength) {
+        bytesRead += _processHeaderData(this, command + bytesRead);
+    }
+}
+
+static uint32_t _processBodyData(CommandReceiver* this, char* command) {
+    uint32_t length = *((uint32_t*) command) + 1; //+1 por el /0
+    length = le32toh(length);
+    uint32_t bytesRead = 4;
+    commandPrinterSetBodyData(&this->cPrinter, command + bytesRead, length);
+    bytesRead += length;
+    return bytesRead;
+}
+
+static void _processBody(CommandReceiver* this, char* command) {
+    uint32_t bytesRead = 0;
+    commandPrinterSetParameterAmount(&this->cPrinter, this->parameterAmount);
+    while (bytesRead < this->bodyLength) {
+        bytesRead += _processBodyData(this, command + bytesRead);
     }
 }
 
@@ -54,6 +84,9 @@ void commandReceiverProcess(CommandReceiver* this, char* command) {
     } else if (!this->readHeader) {
         _processHeader(this, command);
         this->readHeader = true;
+    } else if (!this->readBody) {
+        _processBody(this, command);
+        this->readBody = true;
     }
     free(command);
 }
@@ -67,6 +100,10 @@ size_t commandReceiverGetBuffer(CommandReceiver* this, char** buffer) {
         *buffer = malloc(sizeof(char)*this->headerLength);
         memset(*buffer, 0, this->headerLength);
         return this->headerLength;
+    } else if (!this->readBody) {
+        *buffer = malloc(sizeof(char)*this->bodyLength);
+        memset(*buffer, 0, this->bodyLength);
+        return this->bodyLength;
     }
     return 0;
 }

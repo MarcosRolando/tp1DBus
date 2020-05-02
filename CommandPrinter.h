@@ -9,14 +9,19 @@
 
 typedef struct CommandPrinter {
     uint32_t messageID;
-    char* path, *destiny, *interface, *method, *parameters;
+    char* path, *destiny, *interface, *method, **parameters;
+    char parametersStored;
 } CommandPrinter;
 
 void commandPrinterCreate(CommandPrinter* this);
 
 void commandPrinterSetID(CommandPrinter* this, uint32_t messageID);
 
-void commandPrinterSetData(CommandPrinter* this, char* buffer, uint32_t length, char type);
+void commandPrinterSetHeaderData(CommandPrinter* this, char* buffer, uint32_t length, char type);
+
+void commandPrinterSetBodyData(CommandPrinter* this, char* buffer, uint32_t length);
+
+void commandPrinterSetParameterAmount(CommandPrinter* this, char amount);
 
 void commandPrinterDestroy(CommandPrinter* this);
 

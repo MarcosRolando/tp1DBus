@@ -12,6 +12,7 @@
 typedef struct CommandReceiver {
     CommandPrinter cPrinter;
     uint32_t bodyLength, headerLength;
+    char parameterAmount;
     bool readPreHeader; //los 16 bytes antes de leer el header
     bool readHeader, readBody; //para chequear si ya los lei
 } CommandReceiver;
