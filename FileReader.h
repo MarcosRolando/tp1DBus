@@ -13,7 +13,7 @@ typedef struct FileReader {
     char* command;
 } FileReader;
 
-void fileReaderCreate(FileReader* this, FILE* file);
+void fileReaderCreate(FileReader* this, char* file);
 
 bool fileReaderDoneReading(FileReader* this);
 

@@ -13,22 +13,29 @@ void DBusCreate(DBus* this) {
     //do nothing
 }
 
-void _DBusClient(DBus* this) {
+static void _DBusNextCommand(Client* client, FileReader* reader, uint32_t messageID) {
+    ClientCommand command;
+    clientCommandCreate(&command, messageID);
+    char* commandRead = fileReaderReadFile(reader);
+    if (commandRead) {
+        clientCommandReadCommand(&command, commandRead);
+        char confirmMessage[4];
+        clientSend(client, &command, confirmMessage);
+        printf("0x%04x: %s", messageID, confirmMessage);
+    }
+    clientCommandDestroy(&command);
+}
+
+static void _DBusClient(DBus* this) {
     Client client;
     clientCreate(&client, "localhost", "8080");
     FileReader reader;
-    fileReaderCreate(&reader, stdin);
+    fileReaderCreate(&reader, "client0.in");
     clientConnect(&client);
     uint32_t messageID = 1;
 
     while (!fileReaderDoneReading(&reader)) {
-        ClientCommand command;
-        clientCommandCreate(&command, messageID);
-        clientCommandReadCommand(&command, fileReaderReadFile(&reader));
-        char confirmMessage[4];
-        clientSend(&client, &command, confirmMessage);
-        printf("0x%04x: %s", messageID, confirmMessage);
-        clientCommandDestroy(&command);
+        _DBusNextCommand(&client, &reader, messageID);
         messageID++;
     }
 
@@ -36,7 +43,7 @@ void _DBusClient(DBus* this) {
     fileReaderDestroy(&reader);
 }
 
-void _DBusServer(DBus* this) {
+static void _DBusServer(DBus* this) {
     Server server;
     serverCreate(&server, "8080");
     serverConnect(&server);
