@@ -12,10 +12,10 @@ struct addrinfo;
 
 typedef struct Socket{
     int fd; //file descriptor
-    ErrorVerifier eVerifier;
+    ErrorVerifier* eVerifier;
 } Socket;
 
-void socketCreate(Socket* this);
+void socketCreate(Socket* this, ErrorVerifier* eVerifier);
 
 void socketConnect(Socket* this, struct addrinfo* addresses);
 

@@ -21,7 +21,7 @@ void serverCreate(Server* this, char* port);
 
 void serverConnect(Server* this);
 
-void serverReceive(Server* this, CommandReceiver* cReceiver);
+int serverReceive(Server* this, CommandReceiver* cReceiver);
 
 void serverDestroy(Server* this);
 

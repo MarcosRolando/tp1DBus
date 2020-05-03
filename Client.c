@@ -44,9 +44,9 @@ void clientSend(Client* this, ClientCommand* command, char confirmMessage[]) {
 void clientCreate(Client* this, char* host, char* port) {
     this->host = host;
     this->port = port;
-    socketCreate(&this->socket);
     errorVerifierCreate(&this->eVerifier);
-    messengerCreate(&this->courier);
+    socketCreate(&this->socket, &this->eVerifier);
+    messengerCreate(&this->courier, &this->eVerifier);
 }
 
 void clientDestroy(Client* this) {

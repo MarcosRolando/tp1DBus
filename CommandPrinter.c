@@ -65,5 +65,8 @@ void commandPrinterDestroy(CommandPrinter* this) {
     free(this->destiny);
     free(this->interface);
     free(this->method);
+    for (int i = 0; i < this->parametersStored; ++i) {
+        free(*(this->parameters + i));
+    }
     free(this->parameters);
 }

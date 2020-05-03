@@ -29,6 +29,8 @@ void errorVerifierReceive(ErrorVerifier* this, int flag) {
     if (flag == -1) {
         fprintf(stderr, "Error in receive: %s\n", strerror(errno));
         exit(EXIT_FAILURE);
+    } else if (flag == 0) {
+        this->closedComms = true;
     }
 }
 
@@ -46,8 +48,12 @@ void errorVerifierBind(ErrorVerifier* this, struct addrinfo* rp) {
     }
 }
 
+bool errorVerifierClosedComms(ErrorVerifier* this) {
+    return this->closedComms;
+}
+
 void errorVerifierCreate(ErrorVerifier* this) {
-    this->x = 0;
+    this->closedComms = false;
 }
 
 void errorVerifierDestroy(ErrorVerifier* this) {

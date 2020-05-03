@@ -9,10 +9,10 @@
 #include "ErrorVerifier.h"
 
 typedef struct Messenger {
-    ErrorVerifier eVerifier;
+    ErrorVerifier* eVerifier;
 } Messenger;
 
-void messengerCreate(Messenger* this);
+void messengerCreate(Messenger* this, ErrorVerifier* eVerifier);
 
 void messengerSend(Messenger* this, Socket* socket, char* message, size_t length);
 

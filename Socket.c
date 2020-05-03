@@ -13,8 +13,8 @@ static void _setFileDescriptor(Socket* this, int fd) {
     this->fd = fd;
 }
 
-void socketCreate(Socket* this) {
-    //do nothing
+void socketCreate(Socket* this, ErrorVerifier* eVerifier) {
+    this->eVerifier = eVerifier;
 }
 
 int socketGetFileDescriptor(Socket* this) {
@@ -34,7 +34,7 @@ void socketConnect(Socket* this, struct addrinfo* addresses) {
 
         close(this->fd );
     }
-    errorVerifierConnect(&this->eVerifier, rp);
+    errorVerifierConnect(this->eVerifier, rp);
 }
 
 void socketBind(Socket* this, struct addrinfo* addresses) {
@@ -53,13 +53,13 @@ void socketBind(Socket* this, struct addrinfo* addresses) {
 
         close(this->fd);
     }
-    errorVerifierBind(&this->eVerifier, rp);
+    errorVerifierBind(this->eVerifier, rp);
 }
 
 Socket socketAccept(Socket* this) {
     int peerFd = accept(this->fd, NULL, NULL);
     Socket peer;
-    socketCreate(&peer);
+    socketCreate(&peer, this->eVerifier);
     _setFileDescriptor(&peer, peerFd);
     return peer;
 }
@@ -69,5 +69,6 @@ void socketMaxListen(Socket* this, int max) {
 }
 
 void socketDestroy(Socket* this) {
+    shutdown(this->fd, SHUT_RDWR);
     close(this->fd);
 }

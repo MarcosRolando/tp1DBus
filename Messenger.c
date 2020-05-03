@@ -8,8 +8,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-void messengerCreate(Messenger* this) {
-    errorVerifierCreate(&this->eVerifier);
+void messengerCreate(Messenger* this, ErrorVerifier* eVerifier) {
+    this->eVerifier = eVerifier;
 }
 
 void messengerSend(Messenger* this, Socket* socket, char* message, size_t length) {
@@ -19,7 +19,7 @@ void messengerSend(Messenger* this, Socket* socket, char* message, size_t length
 
     while (bytesSent < length) {
         s = send(destiny, message + bytesSent, length - bytesSent, MSG_NOSIGNAL);
-        errorVerifierSend(&this->eVerifier, s);
+        errorVerifierSend(this->eVerifier, s);
         bytesSent += s;
     }
 }
@@ -31,11 +31,12 @@ void messengerReceive(Messenger* this, Socket* socket, char** message, size_t le
 
     while (bytesReceived < length) {
         s = recv(source, *message + bytesReceived, length - bytesReceived, 0);
-        errorVerifierReceive(&this->eVerifier, s);
+        errorVerifierReceive(this->eVerifier, s);
+        if (errorVerifierClosedComms(this->eVerifier)) break;
         bytesReceived += s;
     }
 }
 
 void messengerDestroy(Messenger* this) {
-    errorVerifierDestroy(&this->eVerifier);
+    errorVerifierDestroy(this->eVerifier);
 }

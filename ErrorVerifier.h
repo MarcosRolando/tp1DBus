@@ -6,11 +6,12 @@
 #define TP1DBUS_ERRORVERIFIER_H
 
 #include <netdb.h>
+#include <stdbool.h>
 
 struct addrinfo;
 
 typedef struct ErrorVerifier {
-    int x;
+    bool closedComms;
 } ErrorVerifier;
 
 void errorVerifierCreate(ErrorVerifier* this);
@@ -22,6 +23,8 @@ void errorVerifierReceive(ErrorVerifier* this, int flag);
 void errorVerifierDestroy(ErrorVerifier* this);
 
 void errorVerifierGetAddrInfo(ErrorVerifier* this, int flag);
+
+bool errorVerifierClosedComms(ErrorVerifier* this);
 
 void errorVerifierConnect(ErrorVerifier* this, struct addrinfo* rp);
 

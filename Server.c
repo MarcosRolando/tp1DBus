@@ -12,12 +12,14 @@
 #include "Server.h"
 
 #define MAX_LISTENERS 1
+#define NOT_DONE 0
+#define DONE 1
 
 void serverCreate(Server* this, char* port) {
     this->port = port;
-    socketCreate(&this->socket);
-    messengerCreate(&this->courier);
     errorVerifierCreate(&this->eVerifier);
+    socketCreate(&this->socket, &this->eVerifier);
+    messengerCreate(&this->courier, &this->eVerifier);
 }
 
 void serverDestroy(Server* this) {
@@ -45,14 +47,16 @@ static void _returnConfirmationMessage(Server* this) {
     messengerSend(&this->courier, &this->peer, message, 4);
 }
 
-void serverReceive(Server* this, CommandReceiver* cReceiver) {
+int serverReceive(Server* this, CommandReceiver* cReceiver) {
     while (!commandReceiverFinished(cReceiver)) {
         char* message = NULL;
         size_t length = commandReceiverGetBuffer(cReceiver, &message);
         messengerReceive(&this->courier, &this->peer, &message, length);
+        if (errorVerifierClosedComms(&this->eVerifier)) return DONE;
         commandReceiverProcess(cReceiver, message);
     }
     _returnConfirmationMessage(this);
+    return NOT_DONE;
 }
 
 void serverConnect(Server* this) {
