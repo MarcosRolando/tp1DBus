@@ -1,9 +1,9 @@
 #include "DBus.h"
 
-int main(int argc, const char* argv[]) {
+int main(int argc, char* argv[]) {
     DBus tp;
     DBusCreate(&tp);
-    DBusRun(&tp, argc, argv);
+    int rv = DBusRun(&tp, argc, argv);
     DBusDestroy(&tp);
-    return 0;
+    return rv;
 }

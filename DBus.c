@@ -9,6 +9,9 @@
 #include "Server.h"
 #include <string.h>
 
+#define ERROR -1
+#define OK 0
+
 void DBusCreate(DBus* this) {
     //do nothing
 }
@@ -26,11 +29,11 @@ static void _DBusNextCommand(Client* client, FileReader* reader, uint32_t messag
     clientCommandDestroy(&command);
 }
 
-static void _DBusClient(DBus* this) {
+static void _DBusClient(DBus* this, char* hostname, char* port, char* file) {
     Client client;
-    clientCreate(&client, "localhost", "8080");
+    clientCreate(&client, hostname, port);
     FileReader reader;
-    fileReaderCreate(&reader, "client0.in");
+    fileReaderCreate(&reader, file);
     clientConnect(&client);
     uint32_t messageID = 1;
 
@@ -43,9 +46,9 @@ static void _DBusClient(DBus* this) {
     fileReaderDestroy(&reader);
 }
 
-static void _DBusServer(DBus* this) {
+static void _DBusServer(DBus* this, char* port) {
     Server server;
-    serverCreate(&server, "8080");
+    serverCreate(&server, port);
     serverConnect(&server);
     bool serverIsDone = false;
 
@@ -60,10 +63,17 @@ static void _DBusServer(DBus* this) {
     serverDestroy(&server);
 }
 
-void DBusRun(DBus* this, int argc, const char* argv[]) {
+int DBusRun(DBus* this, int argc, char* argv[]) {
     const char* mode = *argv + (strlen(*argv) - 6);
-    if (!strcmp(mode, "client")) _DBusClient(this);
-    else if (!strcmp(mode, "server")) _DBusServer(this);
+    if (!strcmp(mode, "client")) {
+        if (argc == 3) _DBusClient(this, argv[1], argv[2], NULL);
+        else if (argc == 4) _DBusClient(this, argv[1], argv[2], argv[3]);
+        else return ERROR;
+    } else if (!strcmp(mode, "server"))  {
+        if (argc != 2) return ERROR;
+        _DBusServer(this, argv[1]);
+    }
+    return OK;
 }
 
 void DBusDestroy(DBus* this) {

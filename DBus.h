@@ -11,7 +11,7 @@ typedef struct DBus {
 
 void DBusCreate(DBus* this);
 
-void DBusRun(DBus* this, int argc, const char* argv[]);
+int DBusRun(DBus* this, int argc, char* argv[]);
 
 void DBusDestroy(DBus* this);
 
