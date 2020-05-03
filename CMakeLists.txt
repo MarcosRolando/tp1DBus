@@ -7,6 +7,8 @@ set(SOURCES main.c ClientCommand.c ClientCommand.h FileReader.c FileReader.h
         Server.c Server.h CommandReceiver.c CommandReceiver.h CommandPrinter.c
         CommandPrinter.h)
 
+add_subdirectory(Tests)
+
 add_executable(client ${SOURCES})
 
 add_executable(server ${SOURCES})
