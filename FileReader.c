@@ -19,6 +19,7 @@ void fileReaderCreate(FileReader* this, char* file) {
 //retorna el primer comando del archivo
 char* fileReaderReadFile(FileReader* this) {
     char buffer[33];
+    free(this->command);
     this->command = NULL;
     if (!feof(this->inputFile)) {
         memset(buffer, 0, 33);

@@ -25,6 +25,8 @@ size_t commandReceiverGetBuffer(CommandReceiver* this, char** buffer);
 
 void commandReceiverPrint(CommandReceiver* this);
 
+void commandReceiverFlush(CommandReceiver* this, char* command);
+
 bool commandReceiverFinished(CommandReceiver* this);
 
 void commandReceiverDestroy(CommandReceiver* this);

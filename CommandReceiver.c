@@ -96,6 +96,10 @@ void commandReceiverPrint(CommandReceiver* this) {
     commandPrinterPrint(&this->cPrinter);
 }
 
+void commandReceiverFlush(CommandReceiver* this, char* command) {
+    free(command);
+}
+
 size_t commandReceiverGetBuffer(CommandReceiver* this, char** buffer) {
     if (!this->readPreHeader) {
         *buffer = malloc(sizeof(char)*16);
