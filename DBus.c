@@ -21,7 +21,7 @@ static void _DBusNextCommand(Client* client, FileReader* reader, uint32_t messag
         clientCommandReadCommand(&command, commandRead);
         char confirmMessage[4];
         clientSend(client, &command, confirmMessage);
-        printf("0x%04x: %s", messageID, confirmMessage);
+        printf("0x%08x: %s", messageID, confirmMessage);
     }
     clientCommandDestroy(&command);
 }
@@ -30,7 +30,7 @@ static void _DBusClient(DBus* this) {
     Client client;
     clientCreate(&client, "localhost", "8080");
     FileReader reader;
-    fileReaderCreate(&reader, "client0.in");
+    fileReaderCreate(&reader, "calls");
     clientConnect(&client);
     uint32_t messageID = 1;
 
