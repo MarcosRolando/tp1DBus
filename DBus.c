@@ -30,7 +30,7 @@ static void _DBusClient(DBus* this) {
     Client client;
     clientCreate(&client, "localhost", "8080");
     FileReader reader;
-    fileReaderCreate(&reader, "calls");
+    fileReaderCreate(&reader, "client0.in");
     clientConnect(&client);
     uint32_t messageID = 1;
 

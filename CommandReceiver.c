@@ -14,6 +14,7 @@ void commandReceiverCreate(CommandReceiver* this) {
     this->readHeader = false;
     this->readPreHeader = false;
     this->parameterAmount = 0;
+    memset(this->preHeader, 0, 16);
 }
 
 static void _processPreHeader(CommandReceiver* this, char* command) {
@@ -85,25 +86,21 @@ void commandReceiverProcess(CommandReceiver* this, char* command) {
     } else if (!this->readHeader) {
         _processHeader(this, command);
         this->readHeader = true;
+        free(command);
     } else if (!this->readBody) {
         _processBody(this, command);
         this->readBody = true;
+        free(command);
     }
-    free(command);
 }
 
 void commandReceiverPrint(CommandReceiver* this) {
     commandPrinterPrint(&this->cPrinter);
 }
 
-void commandReceiverFlush(CommandReceiver* this, char* command) {
-    free(command);
-}
-
 size_t commandReceiverGetBuffer(CommandReceiver* this, char** buffer) {
     if (!this->readPreHeader) {
-        *buffer = malloc(sizeof(char)*16);
-        memset(*buffer, 0, 16);
+        *buffer = this->preHeader;
         return 16;
     } else if (!this->readHeader) {
         *buffer = malloc(sizeof(char)*this->headerLength);

@@ -52,10 +52,7 @@ int serverReceive(Server* this, CommandReceiver* cReceiver) {
         char* message = NULL;
         size_t length = commandReceiverGetBuffer(cReceiver, &message);
         messengerReceive(&this->courier, &this->peer, &message, length);
-        if (errorVerifierClosedComms(&this->eVerifier)) {
-            commandReceiverFlush(cReceiver, message); //libero la memoria que reserver
-            return DONE;
-        }
+        if (errorVerifierClosedComms(&this->eVerifier)) return DONE;
         commandReceiverProcess(cReceiver, message);
     }
     _returnConfirmationMessage(this);
