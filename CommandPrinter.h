@@ -17,9 +17,11 @@ void commandPrinterCreate(CommandPrinter* this);
 
 void commandPrinterSetID(CommandPrinter* this, uint32_t messageID);
 
-void commandPrinterSetHeaderData(CommandPrinter* this, char* buffer, uint32_t length, char type);
+void commandPrinterSetHeaderData(CommandPrinter* this, char* buffer,
+                                                    uint32_t length, char type);
 
-void commandPrinterSetBodyData(CommandPrinter* this, char* buffer, uint32_t length);
+void commandPrinterSetBodyData(CommandPrinter* this, char* buffer,
+                                                            uint32_t length);
 
 void commandPrinterSetParameterAmount(CommandPrinter* this, char amount);
 

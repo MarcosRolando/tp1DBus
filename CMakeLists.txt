@@ -14,11 +14,11 @@ add_executable(client ${SOURCES})
 add_executable(server ${SOURCES})
 
 target_compile_options (client PRIVATE -std=c99 -Wall -Werror -pedantic -pedantic-errors
-        -O0 -ggdb -DDEBUG -fno-inline)
+        -O3 -ggdb -DDEBUG -fno-inline)
 
 target_link_options(client PRIVATE -lm)
 
 target_compile_options (server PRIVATE -std=c99 -Wall -Werror -pedantic -pedantic-errors
-        -O0 -ggdb -DDEBUG -fno-inline)
+        -O3 -ggdb -DDEBUG -fno-inline)
 
 target_link_options(server PRIVATE -lm)

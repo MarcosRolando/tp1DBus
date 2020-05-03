@@ -32,7 +32,7 @@ void socketConnect(Socket* this, struct addrinfo* addresses) {
         if (connect(this->fd , rp->ai_addr, rp->ai_addrlen) != -1)
             break;                  /* Success */
 
-        close(this->fd );
+        close(this->fd);
     }
     errorVerifierConnect(this->eVerifier, rp);
 }
@@ -46,7 +46,7 @@ void socketBind(Socket* this, struct addrinfo* addresses) {
         if (this->fd == -1)
             continue;
 
-        setsockopt(this->fd, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val)); //con esto espero a q me den el port si esta en uso
+        setsockopt(this->fd, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val));
 
         if (bind(this->fd, rp->ai_addr, rp->ai_addrlen) == 0)
             break;                  /* Success */

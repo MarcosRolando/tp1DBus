@@ -16,7 +16,8 @@ void DBusCreate(DBus* this) {
     //do nothing
 }
 
-static void _DBusNextCommand(Client* client, FileReader* reader, uint32_t messageID) {
+static void _DBusNextCommand(Client* client, FileReader* reader,
+                                                        uint32_t messageID) {
     ClientCommand command;
     clientCommandCreate(&command, messageID);
     char* commandRead = fileReaderReadFile(reader);
@@ -67,8 +68,10 @@ int DBusRun(DBus* this, int argc, char* argv[]) {
     const char* mode = *argv + (strlen(*argv) - 6);
     if (!strcmp(mode, "client")) {
         if (argc == 3) _DBusClient(this, argv[1], argv[2], NULL);
-        else if (argc == 4) _DBusClient(this, argv[1], argv[2], argv[3]);
-        else return ERROR;
+        else if (argc == 4)
+            _DBusClient(this, argv[1], argv[2], argv[3]);
+        else
+            return ERROR;
     } else if (!strcmp(mode, "server"))  {
         if (argc != 2) return ERROR;
         _DBusServer(this, argv[1]);

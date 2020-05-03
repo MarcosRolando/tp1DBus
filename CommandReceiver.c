@@ -26,25 +26,28 @@ static void _processPreHeader(CommandReceiver* this, char* command) {
     bytesRead += 4;
     commandPrinterSetID(&this->cPrinter, le32toh(messageID));
     this->headerLength = *((uint32_t*) (command + bytesRead));
-    if (this->headerLength % 8) this->headerLength += (8 - this->headerLength%8);
-    this->headerLength = le32toh(this->headerLength); //cuento el padding del final
+    if (this->headerLength % 8) this->headerLength += (8-this->headerLength%8);
+    this->headerLength = le32toh(this->headerLength); //cuento el padding
 }
 
-static uint32_t _processMainHeaderData(CommandReceiver* this, char* command, char type) {
+static uint32_t _processMainHeaderData(CommandReceiver* this, char* command,
+                                                                    char type) {
     uint32_t bytesRead = 4;
     uint32_t length = *((uint32_t*) (command + bytesRead));
     length = le32toh(length) + 1; //+1 xq no toma en cuenta el /0 lo que leo
     bytesRead += 4;
-    commandPrinterSetHeaderData(&this->cPrinter, command + bytesRead, length, type);
+    commandPrinterSetHeaderData(&this->cPrinter, command + bytesRead,
+                                                                length, type);
     if (length % 8) length += 8 - length % 8;
     bytesRead += length;
     return bytesRead;
 }
 
-static uint32_t _processOptionalHeaderData(CommandReceiver* this, char* command) {
+static uint32_t _processOptionalHeaderData(CommandReceiver* this,
+                                                                char* command) {
     uint32_t bytesRead = 4; //los primeros 4 me dan igual
     this->parameterAmount = *(command + bytesRead);
-    bytesRead += 1 + this->parameterAmount + 1; //+1 del byte recien leido y +1 del /0
+    bytesRead += 1 + this->parameterAmount + 1;
     if (bytesRead % 8) bytesRead += 8 - bytesRead % 8;
     return bytesRead;
 }
@@ -52,7 +55,8 @@ static uint32_t _processOptionalHeaderData(CommandReceiver* this, char* command)
 static uint32_t _processHeaderData(CommandReceiver* this, char* command) {
     char type = *command; //leo que parte del comando es path, dest, etc
     if (type != 0x08) return _processMainHeaderData(this, command, type);
-    else return _processOptionalHeaderData(this, command); //la firma
+    else
+        return _processOptionalHeaderData(this, command); //la firma
 }
 
 static void _processHeader(CommandReceiver* this, char* command) {

@@ -62,7 +62,7 @@ int serverReceive(Server* this, CommandReceiver* cReceiver) {
 void serverConnect(Server* this) {
     struct addrinfo* addresses = _getAddresses(this);
     socketBind(&this->socket, addresses);
-    freeaddrinfo(addresses); //en este punto ya logre bindear al socket y puedo empezar a aceptar conexiones
+    freeaddrinfo(addresses); //en este punto ya logre bindear al socket
     socketMaxListen(&this->socket, MAX_LISTENERS);
     this->peer = socketAccept(&this->socket); //acepto la conexion
 }
