@@ -58,6 +58,7 @@ void commandPrinterPrint(CommandPrinter* this) {
             printf("    * %s\n", *(this->parameters + i));
         }
     }
+    printf("\n");
 }
 
 void commandPrinterDestroy(CommandPrinter* this) {

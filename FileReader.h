@@ -6,6 +6,7 @@
 #define TP1DBUS_FILEREADER_H
 
 #include <stdio.h>
+#include <stdbool.h>
 
 typedef struct FileReader {
     FILE* inputFile;
@@ -13,6 +14,8 @@ typedef struct FileReader {
 } FileReader;
 
 void fileReaderCreate(FileReader* this, FILE* file);
+
+bool fileReaderDoneReading(FileReader* this);
 
 void fileReaderDestroy(FileReader* this);
 

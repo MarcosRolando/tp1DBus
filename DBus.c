@@ -14,25 +14,25 @@ void DBusCreate(DBus* this) {
 }
 
 void _DBusClient(DBus* this) {
-    ClientCommand command;
-    clientCommandCreate(&command, 0x01);
-    FileReader reader;
-    fileReaderCreate(&reader, stdin);
-
-    char* cmd = fileReaderReadFile(&reader);
-    clientCommandReadCommand(&command, cmd);
-
-    char confirmMessage[3];
-
     Client client;
     clientCreate(&client, "localhost", "8080");
+    FileReader reader;
+    fileReaderCreate(&reader, stdin);
     clientConnect(&client);
-    clientSend(&client, &command, confirmMessage);
+    uint32_t messageID = 1;
 
-    printf("%s", confirmMessage);
+    while (!fileReaderDoneReading(&reader)) {
+        ClientCommand command;
+        clientCommandCreate(&command, messageID);
+        clientCommandReadCommand(&command, fileReaderReadFile(&reader));
+        char confirmMessage[4];
+        clientSend(&client, &command, confirmMessage);
+        printf("0x%04x: %s", messageID, confirmMessage);
+        clientCommandDestroy(&command);
+        messageID++;
+    }
 
     clientDestroy(&client);
-    clientCommandDestroy(&command);
     fileReaderDestroy(&reader);
 }
 

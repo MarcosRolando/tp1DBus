@@ -26,6 +26,10 @@ char* fileReaderReadFile(FileReader* this) {
     return this->command;
 }
 
+bool fileReaderDoneReading(FileReader* this) {
+    return feof(this->inputFile);
+}
+
 void fileReaderDestroy(FileReader* this) {
     free(this->command);
 }

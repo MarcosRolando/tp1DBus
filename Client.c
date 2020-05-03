@@ -28,7 +28,7 @@ int clientConnect(Client* this) {
 }
 
 static void _receiveConfirmationMessage(Client* this, char confirmMessage[]) {
-    messengerReceive(&this->courier, &this->socket, &confirmMessage, 3);
+    messengerReceive(&this->courier, &this->socket, &confirmMessage, 4);
 }
 
 void clientSend(Client* this, ClientCommand* command, char confirmMessage[]) {
